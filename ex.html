@@ -1,0 +1,499 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blackbox.ai Screenshot Replica</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+      color: #374151;
+    }
+    #features {
+      position: relative;
+      max-width: 7xl;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: -1rem;
+      z-index: 20;
+      user-select: none;
+      flex-wrap: wrap;
+    }
+    .feature-box {
+      flex: 1 1 280px;
+      max-width: 320px;
+      border-radius: 9999px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: default;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px -5px rgb(0 0 0 / 0.1);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      height: 160px;
+      justify-content: center;
+    }
+    .feature-box:hover,
+    .feature-box:focus-within {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 30px -10px rgb(0 0 0 / 0.2);
+      outline: none;
+    }
+    .feature-box h3 {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+    .feature-box p {
+      font-size: 0.875rem;
+      line-height: 1.3;
+      flex-grow: 1;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .feature-api {
+      background: #0b1320;
+    }
+    .feature-hipaa {
+      background: #3fc1b0;
+    }
+    .feature-crossplatform {
+      background: #14b8a6;
+    }
+    .feature-hl7 {
+      background: #22c55e;
+    }
+    .feature-cloud {
+      background: #3b82f6;
+    }
+    .feature-login {
+      background: #7895d6;
+    }
+    .feature-backup {
+      background: #6dccb1;
+    }
+    .feature-dicom {
+      background: #f97316;
+    }
+    .feature-abdm {
+      background: #ef4444;
+    }
+    .feature-frontoffice {
+      background: #2563eb;
+    }
+    .feature-registration {
+      background: #4c51bf;
+    }
+    .feature-emergency {
+      background: #db2777;
+    }
+    .feature-worklist {
+      background: #059669;
+    }
+    .feature-doctorvisit {
+      background: #d97706;
+    }
+    .feature-box::before {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      opacity: 0.15;
+      top: -25px;
+      right: -25px;
+      border-radius: 50%;
+      z-index: 0;
+      transition: opacity 0.4s ease;
+    }
+    .feature-api::before {
+      background: #1e293b;
+    }
+    .feature-hipaa::before {
+      background: #2c7a7b;
+    }
+    .feature-crossplatform::before {
+      background: #0f766e;
+    }
+    .feature-hl7::before {
+      background: #15803d;
+    }
+    .feature-cloud::before {
+      background: #2563eb;
+    }
+    .feature-login::before {
+      background: #4c51bf;
+    }
+    .feature-backup::before {
+      background: #15803d;
+    }
+    .feature-dicom::before {
+      background: #ea580c;
+    }
+    .feature-abdm::before {
+      background: #dc2626;
+    }
+    .feature-frontoffice::before {
+      background: #1e40af;
+    }
+    .feature-registration::before {
+      background: #3730a3;
+    }
+    .feature-emergency::before {
+      background: #be185d;
+    }
+    .feature-worklist::before {
+      background: #047857;
+    }
+    .feature-doctorvisit::before {
+      background: #b45309;
+    }
+    .feature-box:hover::before,
+    .feature-box:focus-within::before {
+      opacity: 0.3;
+    }
+    @media (max-width: 1024px) {
+      #features {
+        flex-wrap: wrap;
+        margin-top: -1rem;
+      }
+      .feature-box {
+        max-width: 100%;
+        height: auto;
+        padding: 1.5rem 1rem;
+        border-radius: 1.5rem;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-height: 140px;
+      }
+      .feature-box h3 {
+        font-size: 1.125rem;
+      }
+      .feature-box p {
+        font-size: 0.875rem;
+        max-width: 100%;
+      }
+      .feature-box::before {
+        width: 80px;
+        height: 80px;
+        top: -15px;
+        right: -15px;
+      }
+    }
+    @media (max-width: 640px) {
+      #features {
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      #technical-container {
+        width: 280px;
+        height: 280px;
+        background-color: #e0f2f1;
+        border-radius: 50%;
+        margin: 0 auto 2rem auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      #technical-heading {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+        color: #0f766e;
+      }
+      #technical-desc {
+        font-size: 1rem;
+        color: #4b5563;
+        line-height: 1.4;
+      }
+      #technical-text {
+        display: none;
+      }
+    }
+    #technical-heading {
+      font-size: 1.75rem;
+    }
+    @media (min-width: 768px) {
+      #technical-heading {
+        font-size: 2.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top dark section -->
+  <section
+    class="bg-[#0B1320] rounded-xl max-w-7xl mx-auto mt-10 px-6 py-8 sm:py-10 sm:px-10 lg:px-16 lg:py-12 text-white shadow-lg"
+  >
+    <div
+      class="flex flex-col md:flex-row md:justify-between md:items-start gap-8 md:gap-0"
+    >
+      <div class="flex gap-4 md:flex-col md:gap-6 max-w-md">
+        <div class="flex items-start pt-1">
+          <img
+            alt="Magnifying glass icon in teal color, symbolizing search and login"
+            class="w-6 h-6 mt-1"
+            height="24"
+            src="https://storage.googleapis.com/a1aa/image/22d32a80-cb7f-4222-dabc-e6bf086e71ed.jpg"
+            width="24"
+          />
+        </div>
+        <div>
+          <h2 class="text-white text-lg sm:text-xl font-semibold leading-tight">
+            One Web Login to
+            <span class="text-[#3FC1B0]">Manage It All</span>
+          </h2>
+          <p
+            class="text-[#A0B0B9] text-xs sm:text-sm mt-2 max-w-sm leading-relaxed"
+          >
+            No more juggling multiple tools or tabs. One secure login gives you
+            full control over your healthcare facility’s operations and data,
+            powered by a truly integrated hospital ERP system.
+          </p>
+        </div>
+      </div>
+      <div
+        class="grid grid-cols-2 sm:grid-cols-3 gap-x-10 gap-y-3 text-xs sm:text-sm max-w-md"
+      >
+        <div class="flex items-center gap-2">
+          <i class="fas fa-check text-[#3FC1B0] text-[10px] sm:text-xs"></i>
+          <span>Appointments</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-check text-[#3FC1B0] text-[10px] sm:text-xs"></i>
+          <span>Pharmacy Stock</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-check text-[#3FC1B0] text-[10px] sm:text-xs"></i>
+          <span>Billing &amp; Claims</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-check text-[#3FC1B0] text-[10px] sm:text-xs"></i>
+          <span>Lab Orders &amp; Results</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-check text-[#3FC1B0] text-[10px] sm:text-xs"></i>
+          <span>Patient Records</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-check text-[#3FC1B0] text-[10px] sm:text-xs"></i>
+          <span>Insurance Integrations</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-check text-[#3FC1B0] text-[10px] sm:text-xs"></i>
+          <span>Daily Ops Dashboards</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-check text-[#3FC1B0] text-[10px] sm:text-xs"></i>
+          <span>Admin &amp; Staff Access</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Bottom white section -->
+  <section class="max-w-7xl mx-auto mt-20 px-6 sm:px-10 lg:px-16 text-center">
+    <div
+      id="technical-container"
+      class="hidden md:flex flex-col items-center gap-3"
+      style="margin-bottom: 3rem;"
+    >
+      <img
+        alt="Stacked layers icon in teal color, symbolizing technology layers"
+        class="w-8 h-8"
+        height="32"
+        src="https://storage.googleapis.com/a1aa/image/b9707a54-7faa-4819-2bac-26486df49038.jpg"
+        width="32"
+      />
+      <h3
+        class="font-semibold text-gray-900 leading-tight font-sans"
+        id="technical-heading"
+      >
+        Technical Parameters
+      </h3>
+      <p
+        class="text-xs sm:text-sm max-w-md text-gray-500 leading-relaxed"
+        id="technical-desc"
+      >
+        Built with robust, secure, and interoperable technologies to meet the
+        evolving demands of modern healthcare.
+      </p>
+    </div>
+    <div id="technical-text" class="block md:hidden mt-20 mb-8">
+      <h3
+        class="font-semibold text-gray-900 leading-tight font-sans"
+        id="technical-heading"
+      >
+        Technical Parameters
+      </h3>
+      <p
+        class="text-xs sm:text-sm max-w-md text-gray-500 leading-relaxed mx-auto px-4"
+      >
+        Built with robust, secure, and interoperable technologies to meet the
+        evolving demands of modern healthcare.
+      </p>
+    </div>
+    <div class="mt-16" id="features" role="list">
+      <div
+        aria-label="API Integration"
+        class="feature-box feature-api"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>API Integration</h3>
+        <p>
+          Seamless connectivity with external systems for enhanced
+          interoperability.
+        </p>
+      </div>
+      <div
+        aria-label="HIPAA Compliant"
+        class="feature-box feature-hipaa"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>HIPAA Compliant</h3>
+        <p>Ensuring patient data privacy and security in all operations.</p>
+      </div>
+      <div
+        aria-label="Cross Platform Compatibility"
+        class="feature-box feature-crossplatform"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Cross Platform Compatibility</h3>
+        <p>
+          Accessible on multiple devices and operating systems without
+          compromise.
+        </p>
+      </div>
+      <div
+        aria-label="HL7 Protocol Enablement"
+        class="feature-box feature-hl7"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>HL7 Protocol Enablement</h3>
+        <p>Supports healthcare messaging standards for smooth data exchange.</p>
+      </div>
+      <div
+        aria-label="Cloud Based Architecture"
+        class="feature-box feature-cloud"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Cloud Based Architecture</h3>
+        <p>Scalable and reliable infrastructure for anytime, anywhere access.</p>
+      </div>
+      <div
+        aria-label="Login ID Tracking"
+        class="feature-box feature-login"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Login ID Tracking</h3>
+        <p>Comprehensive audit trails for user activity and security monitoring.</p>
+      </div>
+      <div
+        aria-label="Dual Data Backup"
+        class="feature-box feature-backup"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Dual Data Backup</h3>
+        <p>Redundant data storage to prevent loss and ensure availability.</p>
+      </div>
+      <div
+        aria-label="DICOM Protocol Enablement"
+        class="feature-box feature-dicom"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>DICOM Protocol Enablement</h3>
+        <p>Supports medical imaging standards for seamless integration.</p>
+      </div>
+      <div
+        aria-label="ABDM Compliant"
+        class="feature-box feature-abdm"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>ABDM Compliant</h3>
+        <p>Aligned with national digital health mission standards.</p>
+      </div>
+      <div
+        aria-label="Front Office"
+        class="feature-box feature-frontoffice"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Front Office</h3>
+        <p>Efficient management of patient appointments and inquiries.</p>
+      </div>
+      <div
+        aria-label="Registration &amp; OP Bill"
+        class="feature-box feature-registration"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Registration &amp; OP Bill</h3>
+        <p>Streamlined patient registration and outpatient billing processes.</p>
+      </div>
+      <div
+        aria-label="Emergency Admission"
+        class="feature-box feature-emergency"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Emergency Admission</h3>
+        <p>Rapid and secure admission process for emergency cases.</p>
+      </div>
+      <div
+        aria-label="Reference Work List"
+        class="feature-box feature-worklist"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Reference Work List</h3>
+        <p>Organized task lists for clinical and administrative staff.</p>
+      </div>
+      <div
+        aria-label="Doctor Visit"
+        class="feature-box feature-doctorvisit"
+        role="listitem"
+        tabindex="0"
+      >
+        <h3>Doctor Visit</h3>
+        <p>Comprehensive tracking of patient visits and consultations.</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,935 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   AyuCare Hospital Management System
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <style>
+   /* Prevent horizontal scroll */
+   html, body {
+     overflow-x: hidden;
+   }
+   body {
+      background-color: #f7f9fb;
+      font-family: "Inter", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      width: 100%;
+      background-color: white;
+      box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+      overflow-x: hidden;
+    }
+    /* Banner image container */
+    .banner-container {
+      position: relative;
+      width: 100%;
+      height: 50vh;
+      max-height: 360px;
+      overflow: hidden;
+    }
+    .banner-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+    }
+    .banner-image.active {
+      opacity: 1;
+      position: relative;
+    }
+    .banner-text-container {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(4, 78, 74, 0.85), rgba(4, 78, 74, 0.4) 50%, transparent);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 90vw;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      color: white;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      z-index: 10;
+      height: 100%;
+    }
+    .banner-text-container h1 {
+      font-weight: 400; /* Removed bold */
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: 1px;
+    }
+    .banner-text-container p {
+      font-weight: 400; /* Removed bold */
+      font-size: 0.95rem;
+      max-width: 600px;
+    }
+    @media (min-width: 640px) {
+      .banner-container {
+        height: 60vh;
+        max-height: 420px;
+      }
+      .banner-text-container h1 {
+        font-size: 2.5rem;
+      }
+      .banner-text-container p {
+        font-size: 1.15rem;
+      }
+    }
+    @media (min-width: 1024px) {
+      .banner-container {
+        height: 70vh;
+        max-height: 720px;
+      }
+      .banner-text-container h1 {
+        font-size: 3.5rem;
+      }
+      .banner-text-container p {
+        font-size: 1.5rem;
+      }
+    }
+    /* Feature boxes container */
+    #features {
+      position: relative;
+      max-width: 7xl;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem; /* Changed gap to 0.5rem for mobile */
+      margin-top: -3.5rem;
+      z-index: 20;
+      user-select: none;
+      flex-wrap: nowrap;
+      overflow-x: visible;
+      scroll-snap-type: none;
+    }
+    /* Feature boxes */
+    .feature-box {
+      flex: 0 0 220px;
+      border-radius: 1rem;
+      padding: 1rem 0.75rem;
+      text-align: center;
+      cursor: default;
+      transition: none;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px -5px rgb(0 0 0 / 0.1);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      scroll-snap-align: none;
+      background-clip: padding-box;
+      user-select: none;
+    }
+    .feature-box i {
+      font-size: 2.5rem;
+      margin-bottom: 0;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .feature-box h3 {
+      font-weight: 700;
+      font-size: 1.125rem;
+      margin: 0;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+    /* Distinct background colors for each box */
+    .feature-doctor {
+      background: #68d1c8; /* teal-400 */
+    }
+    .feature-billing {
+      background: #7895d6; /* blue-600 */
+    }
+    .feature-lab {
+      background: #6dccb1; /* green-600 */
+    }
+    /* Square decorative shapes behind feature boxes */
+    .feature-box::before {
+      content: "";
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      opacity: 0.15;
+      top: -20px;
+      right: -20px;
+      border-radius: 0.5rem;
+      transform: rotate(45deg);
+      z-index: 0;
+      transition: none;
+    }
+    .feature-doctor::before {
+      background: #14b8a6; /* teal-500 */
+    }
+    .feature-billing::before {
+      background: #3b82f6; /* blue-500 */
+    }
+    .feature-lab::before {
+      background: #22c55e; /* green-500 */
+    }
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      #features {
+        flex-wrap: nowrap;
+        margin-top: -2rem;
+      }
+      .feature-box {
+        max-width: 200px;
+        flex: 0 0 200px;
+        padding: 0.75rem 0.5rem;
+      }
+      .feature-box i {
+        font-size: 2rem;
+      }
+      .feature-box h3 {
+        font-size: 1rem;
+      }
+      .feature-box::before {
+        width: 60px;
+        height: 60px;
+        top: -15px;
+        right: -15px;
+      }
+    }
+    @media (max-width: 640px) {
+      #features {
+        flex-wrap: nowrap;
+        margin-top: -1rem;
+        padding-left: 0;
+        padding-right: 0;
+        justify-content: center;
+        overflow-x: hidden; /* Removed horizontal scroll */
+        gap: 0.5rem !important; /* enforce gap 0.5rem */
+      }
+      .feature-box {
+        flex: 0 0 120px;
+        max-width: 120px;
+        padding: 0.5rem 0.5rem;
+      }
+      .feature-box i {
+        font-size: 1.5rem;
+      }
+      .feature-box h3 {
+        font-size: 0.875rem;
+      }
+      .feature-box::before {
+        width: 45px;
+        height: 45px;
+        top: -10px;
+        right: -10px;
+      }
+    }
+    /* About Us Section */
+    #about {
+      max-width: 7xl;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    #about > div {
+      width: 100%;
+      opacity: 0;
+      transform: translateX(0);
+      transition: all 0.8s ease;
+    }
+    #about > div.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    #about > div.content-slide {
+      transform: translateX(-50px);
+    }
+    #about > div.content-slide.visible {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    #about > div.image-slide {
+      transform: translateX(50px);
+    }
+    #about > div.image-slide.visible {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    #about h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: rgb(15 118 110 / var(--tw-text-opacity, 1));
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    #about p {
+      color: #374151;
+      font-size: 1.125rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      font-weight: 400; /* Removed bold */
+    }
+    #about img {
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 20px rgb(0 0 0 / 0.1);
+      width: 100%;
+      max-width: 550px; /* Slightly smaller */
+      height: auto;
+      object-fit: cover;
+    }
+    @media (min-width: 768px) {
+      #about {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+      #about > div {
+        width: 50%;
+      }
+      #about h2, #about p {
+        text-align: left;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+    /* FAQ Section */
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+      overflow-x: hidden;
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 1024px) {
+      .faq-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 640px) {
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .ayu-faq-item {
+      background-color: #e0f2f1;
+      border-radius: 0.5rem;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      color: #0f766e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      outline-offset: 2px;
+      transition: background-color 0.3s ease;
+    }
+    .ayu-faq-item:focus {
+      outline: 2px solid #14b8a6;
+      background-color: #b2dfdb;
+    }
+    .ayu-faq-item.teal {
+      background-color: #b2dfdb;
+      color: #0f766e;
+    }
+    .ayu-faq-item.blue {
+      background-color: #c7d2fe;
+      color: #1e40af;
+    }
+    .ayu-faq-item.green {
+      background-color: #bbf7d0;
+      color: #15803d;
+    }
+    .ayu-faq-arrow {
+      width: 1.25rem;
+      height: 1.25rem;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      color: inherit;
+    }
+    .ayu-faq-arrow.open {
+      transform: rotate(90deg);
+    }
+    .ayu-faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      background-color: white;
+      border-radius: 0 0 0.5rem 0.5rem;
+      padding: 0 1.5rem;
+      color: #374151;
+      font-size: 1rem;
+      line-height: 1.5;
+      user-select: text;
+      grid-column: span 5;
+    }
+    .ayu-faq-answer.open {
+      max-height: 500px;
+      padding: 1rem 1.5rem;
+    }
+  </style>
+ </head>
+ <body class="bg-[#f7f9fb]">
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+   <div class="max-w-[1280px] mx-auto flex items-center justify-between h-20 px-4 sm:px-6 md:px-8 overflow-x-hidden">
+    <div class="w-[180px] md:w-[250px] h-16 md:h-20 rounded-md flex items-center justify-center flex-shrink-0 select-none">
+     <img alt="AyuCare Hospital Management System logo with white text on blue background, rectangular shape" class="object-contain h-12 md:h-16" height="60" src="https://storage.googleapis.com/a1aa/image/a942dacf-942f-401c-d68e-d3b23713a61e.jpg" width="200"/>
+    </div>
+    <ul class="hidden md:flex items-center gap-8 text-[20px] text-[#00629e] font-medium select-none relative" id="navLinks" style="max-width: calc(100vw - 280px); overflow-x: hidden;">
+     <li>
+      <a class="hover:text-[#1f97dc] transition" href="index">
+       Home
+      </a>
+     </li>
+     <li>
+      <a class="hover:text-[#1f97dc] transition" href="aboutus">
+       About
+      </a>
+     </li>
+     <li class="relative" id="modulesMenu">
+      <button aria-expanded="false" aria-haspopup="true" class="flex items-center gap-1 focus:outline-none text-[#00629e] hover:text-[#1f97dc] transition font-medium" id="desktopDropdownBtn" type="button">
+       Services
+       <i class="fas fa-angle-down"></i>
+      </button>
+      <ul aria-label="submenu" class="absolute top-full left-0 mt-1 bg-[#f7f9fb] shadow-lg rounded-md min-w-[220px] max-w-[350px] whitespace-nowrap hidden z-50" id="modulesDropdown">
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="out-patient-management">
+         Out-Patient Management
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="In-patient-management">
+         In-Patient Management
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="clinicalmanagement">
+         Clinical Management
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="pharmacy">
+         Pharmacy
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="OT-management">
+         OT Management
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="digitalrecord">
+         Digital Records
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="laboratory">
+         Laboratory
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="radiology">
+         Radiology
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition" href="revenue-analysis">
+         Revenue Analysis
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li>
+      <a class="hover:text-[#1f97dc] transition" href="patient-portal">
+       patient-portal
+      </a>
+     </li>
+     <li>
+      <a class="hover:text-[#1f97dc] transition" href="whychoose us">
+       whychoose us
+      </a>
+     </li>
+     <li>
+      <a class="hover:text-[#1f97dc] transition" href="testimonals">
+       Testimonials
+      </a>
+     </li>
+     <li>
+      <button class="bg-[#00629e] hover:bg-[#004a75] text-white px-4 py-2 rounded transition font-medium" onclick="location.href='contactus'" type="button">
+       Contact Us
+      </button>
+     </li>
+    </ul>
+    <button aria-label="Toggle menu" class="md:hidden text-[#0b5fa5] text-3xl focus:outline-none" id="hamburgerIcon" type="button">
+     <i class="fas fa-bars"></i>
+    </button>
+   </div>
+   <!-- Mobile menu -->
+   <div class="hidden bg-[#00629e] text-white w-full px-6 pb-6 overflow-x-hidden" id="mobileMenu">
+    <ul class="flex flex-col gap-4 text-lg select-none">
+     <li>
+      <a class="block w-full" href="index" tabindex="0">
+       Home
+      </a>
+     </li>
+     <li>
+      <a class="block w-full" href="aboutus" tabindex="0">
+       About
+      </a>
+     </li>
+     <li>
+      <button aria-controls="mobileModulesSubmenu" aria-expanded="false" class="flex justify-between items-center w-full font-medium" id="mobileModulesBtn" type="button">
+       Services
+       <i class="fas fa-angle-down"></i>
+      </button>
+      <ul class="hidden flex flex-col bg-white text-black rounded-md mt-2 overflow-hidden" id="mobileModulesSubmenu">
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="out-patient-management" tabindex="0">
+         Out-Patient Management
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="In-patient-management" tabindex="0">
+         In-Patient Management
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="clinicalmanagement" tabindex="0">
+         Clinical Management
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="pharmacy" tabindex="0">
+         Pharmacy
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="OT-management" tabindex="0">
+         OT Management
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="digitalrecord" tabindex="0">
+         Digital Records
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="laboratory" tabindex="0">
+         Laboratory
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="radiology" tabindex="0">
+         Radiology
+        </a>
+       </li>
+       <li>
+        <a class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition" href="revenue-analysis" tabindex="0">
+         Revenue Analysis
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li>
+      <a class="block w-full" href="patient-portal" tabindex="0">
+       patient-portal
+      </a>
+     </li>
+     <li>
+      <a class="block w-full" href="whychoose us" tabindex="0">
+       whychoose us
+      </a>
+     </li>
+     <li>
+      <a class="block w-full" href="testimonals" tabindex="0">
+       Testimonials
+      </a>
+     </li>
+     <li>
+      <a class="block w-full bg-white text-[#00629e] text-center rounded px-4 py-2 font-medium hover:bg-gray-200 transition" href="contactus" tabindex="0">
+       Contact Us
+      </a>
+     </li>
+    </ul>
+   </div>
+  </nav>
+  <!-- Banner Section with Carousel -->
+  <section aria-label="Hero Section" class="banner-container relative overflow-hidden">
+   <img alt="Modern hospital reception area with staff assisting patients, bright and welcoming environment" class="banner-image active" height="720" loading="lazy" src="https://storage.googleapis.com/a1aa/image/96e612fe-a59f-40d9-3d75-ffc21331315b.jpg" width="1920"/>
+   <img alt="Smiling doctor consulting with patient in a bright hospital room, medical equipment visible" class="banner-image" height="720" loading="lazy" src="https://storage.googleapis.com/a1aa/image/804a1592-e919-4e85-4623-3eccf7e6fd68.jpg" width="1920"/>
+   <img alt="Hospital staff collaborating in a modern nurse station with computers and monitors" class="banner-image" height="720" loading="lazy" src="https://storage.googleapis.com/a1aa/image/df24dc84-9cc9-451b-6c58-f62d4249d46c.jpg" width="1920"/>
+   <div class="banner-text-container">
+    <h1 id="bannerTitle">
+     Streamline Your Hospital Operations
+    </h1>
+    <p id="bannerDesc">
+     AyuCare offers a comprehensive hospital management system to simplify patient care and administration.
+    </p>
+   </div>
+  </section>
+  <!-- Three Highlighted Feature Boxes -->
+  <section aria-label="What We Do Features" id="features" tabindex="0">
+   <article aria-label="Hospital Management" class="feature-box feature-doctor" tabindex="0">
+    <i aria-hidden="true" class="fas fa-user-md"></i>
+    <h3>
+     Hospital Management
+    </h3>
+   </article>
+   <article aria-label="Billing System" class="feature-box feature-billing" tabindex="0">
+    <i aria-hidden="true" class="fas fa-file-invoice-dollar"></i>
+    <h3>
+     Billing System
+    </h3>
+   </article>
+   <article aria-label="Lab and Radiology" class="feature-box feature-lab" tabindex="0">
+    <i aria-hidden="true" class="fas fa-vials"></i>
+    <h3>
+     Lab &amp; Radiology
+    </h3>
+   </article>
+  </section>
+  <!-- About Us Section -->
+  <section aria-label="What is AyuCare" class="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center gap-12 overflow-x-hidden" id="about">
+   <div class="md:w-1/2 content-slide fadeIn visible">
+    <h2 class="text-4xl font-extrabold mb-6" style="
+          font-family: 'Playfair Display', serif;
+          color: rgb(15 118 110 / var(--tw-text-opacity, 1));
+        ">
+     Your Complete Hospital Management Partner
+    </h2>
+    <p class="text-gray-700 text-lg leading-relaxed font-normal">
+     AyuCare simplifies hospital operations – from patient registration to
+        discharge – including lab reports, prescriptions, billing, pharmacy,
+        and more. Our system is designed to streamline workflows, improve
+        patient care, and enhance administrative efficiency.
+    </p>
+   </div>
+   <div class="md:w-1/2 image-slide fadeIn visible">
+    <img alt="Animated illustration of hospital management system dashboard showing graphs, icons, and workflow" class="rounded-lg shadow-lg w-full object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/0dfb3365-c83a-4dfa-7a7a-422656a1c599.jpg" width="600"/>
+   </div>
+  </section>
+  <!-- FAQ Section -->
+  <section aria-label="Ayu Care Healthcare Management FAQs" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 overflow-x-hidden">
+   <h2 class="text-center text-3xl font-semibold text-4xl font-extrabold mb-6" style="
+        font-family: 'Playfair Display', serif;
+        color: rgb(15 118 110 / var(--tw-text-opacity, 1));
+      ">
+    Ayu Care Healthcare Management FAQs
+   </h2>
+   <div class="faq-container">
+    <div class="faq-grid" id="ayu-faqs">
+     <div aria-controls="ayu-answer-0" aria-expanded="false" class="ayu-faq-item teal" data-index="0" role="button" tabindex="0">
+      <span>
+       Seamless Patient Registration and Appointment Booking via Web and WhatsApp
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-0" class="ayu-faq-answer" id="ayu-answer-0" role="region">
+      Ayu Care provides seamless patient registration and appointment booking through both web and WhatsApp platforms, ensuring convenience and accessibility for patients.
+     </div>
+     <div aria-controls="ayu-answer-1" aria-expanded="false" class="ayu-faq-item blue" data-index="1" role="button" tabindex="0">
+      <span>
+       Comprehensive Electronic Medical Records with integrated clinical coding (ICD, CPT, SNOMED, LOINC)
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-1" class="ayu-faq-answer" id="ayu-answer-1" role="region">
+      Our system integrates clinical coding standards like ICD, CPT, SNOMED, and LOINC into electronic medical records for accurate and standardized patient data management.
+     </div>
+     <div aria-controls="ayu-answer-2" aria-expanded="false" class="ayu-faq-item green" data-index="2" role="button" tabindex="0">
+      <span>
+       Efficient management of Outpatient and Inpatient workflows including Bed allocation and Discharge
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-2" class="ayu-faq-answer" id="ayu-answer-2" role="region">
+      Ayu Care streamlines outpatient and inpatient workflows, including bed allocation and discharge processes, to improve hospital efficiency and patient care.
+     </div>
+     <div aria-controls="ayu-answer-3" aria-expanded="false" class="ayu-faq-item teal" data-index="3" role="button" tabindex="0">
+      <span>
+       Fully integrated Lab and Radiology systems with automated Test ordering, Tracking, and Report delivery
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-3" class="ayu-faq-answer" id="ayu-answer-3" role="region">
+      Our platform integrates lab and radiology systems with automated test ordering, tracking, and report delivery for seamless diagnostics management.
+     </div>
+     <div aria-controls="ayu-answer-4" aria-expanded="false" class="ayu-faq-item blue" data-index="4" role="button" tabindex="0">
+      <span>
+       Operation Theatre scheduling, Consent handling, and Surgical procedure documentation
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-4" class="ayu-faq-answer" id="ayu-answer-4" role="region">
+      Manage operation theatre schedules, consent forms, and surgical documentation efficiently with Ayu Care’s integrated tools.
+     </div>
+     <div aria-controls="ayu-answer-5" aria-expanded="false" class="ayu-faq-item green" data-index="5" role="button" tabindex="0">
+      <span>
+       Pharmacy Management with real-time stock control, E-prescriptions, and Billing integration
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-5" class="ayu-faq-answer" id="ayu-answer-5" role="region">
+      Ayu Care offers pharmacy management with real-time stock control, electronic prescriptions, and seamless billing integration.
+     </div>
+     <div aria-controls="ayu-answer-6" aria-expanded="false" class="ayu-faq-item teal" data-index="6" role="button" tabindex="0">
+      <span>
+       Robust Inventory and Asset management with Vendor and Purchase order tracking
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-6" class="ayu-faq-answer" id="ayu-answer-6" role="region">
+      Track inventory and assets efficiently with vendor management and purchase order tracking features.
+     </div>
+     <div aria-controls="ayu-answer-7" aria-expanded="false" class="ayu-faq-item blue" data-index="7" role="button" tabindex="0">
+      <span>
+       Automated Output Management delivering Reports and Bills
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-7" class="ayu-faq-answer" id="ayu-answer-7" role="region">
+      Our system automates report and bill generation, ensuring timely and accurate output management.
+     </div>
+     <div aria-controls="ayu-answer-8" aria-expanded="false" class="ayu-faq-item green" data-index="8" role="button" tabindex="0">
+      <span>
+       Intuitive Nursing Station tools for Vitals Monitoring, Medication Administration, and Shift handover
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-8" class="ayu-faq-answer" id="ayu-answer-8" role="region">
+      Nursing stations benefit from tools designed for vitals monitoring, medication administration, and smooth shift handovers.
+     </div>
+     <div aria-controls="ayu-answer-9" aria-expanded="false" class="ayu-faq-item teal" data-index="9" role="button" tabindex="0">
+      <span>
+       Secured Patient Portal and Mobile App for easy access to Medical records, Appointments, and Billing
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-9" class="ayu-faq-answer" id="ayu-answer-9" role="region">
+      Patients can securely access their medical records, appointments, and billing information via our portal and mobile app.
+     </div>
+     <div aria-controls="ayu-answer-10" aria-expanded="false" class="ayu-faq-item blue" data-index="10" role="button" tabindex="0">
+      <span>
+       Role-based Security, Audit trails, and Compliance-ready architecture ensuring Data Privacy and Safety
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-10" class="ayu-faq-answer" id="ayu-answer-10" role="region">
+      Our platform ensures data privacy and safety with role-based security, audit trails, and compliance-ready architecture.
+     </div>
+     <div aria-controls="ayu-answer-11" aria-expanded="false" class="ayu-faq-item green" data-index="11" role="button" tabindex="0">
+      <span>
+       Real-time Dashboards and MIS reports offering insights into Clinical, Operational, and Financial performance
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-11" class="ayu-faq-answer" id="ayu-answer-11" role="region">
+      Get real-time insights into clinical, operational, and financial performance through dashboards and MIS reports.
+     </div>
+     <div aria-controls="ayu-answer-12" aria-expanded="false" class="ayu-faq-item teal" data-index="12" role="button" tabindex="0">
+      <span>
+       User-friendly interfaces designed for quick adoption by Doctors, Nurses, Admin staff, and Patients
+      </span>
+      <svg aria-hidden="true" class="ayu-faq-arrow" fill="none" height="24" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+     </div>
+     <div aria-labelledby="ayu-faq-12" class="ayu-faq-answer" id="ayu-answer-12" role="region">
+      Our interfaces are designed for ease of use, enabling quick adoption by doctors, nurses, administrative staff, and patients.
+     </div>
+    </div>
+   </div>
+  </section>
+  <script>
+   // Dropdown toggle for desktop
+    const desktopDropdownBtn = document.getElementById('desktopDropdownBtn');
+    const modulesDropdown = document.getElementById('modulesDropdown');
+    const modulesMenu = document.getElementById('modulesMenu');
+
+    desktopDropdownBtn.addEventListener('click', () => {
+      const expanded = desktopDropdownBtn.getAttribute('aria-expanded') === 'true';
+      desktopDropdownBtn.setAttribute('aria-expanded', !expanded);
+      modulesDropdown.classList.toggle('hidden');
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', (e) => {
+      if (!modulesMenu.contains(e.target)) {
+        modulesDropdown.classList.add('hidden');
+        desktopDropdownBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Mobile menu toggle
+    const hamburgerIcon = document.getElementById('hamburgerIcon');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburgerIcon.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const expanded = hamburgerIcon.getAttribute('aria-expanded') === 'true';
+      hamburgerIcon.setAttribute('aria-expanded', !expanded);
+    });
+
+    // Mobile submenu toggle
+    const mobileModulesBtn = document.getElementById('mobileModulesBtn');
+    const mobileModulesSubmenu = document.getElementById('mobileModulesSubmenu');
+    mobileModulesBtn.addEventListener('click', () => {
+      const expanded = mobileModulesBtn.getAttribute('aria-expanded') === 'true';
+      mobileModulesBtn.setAttribute('aria-expanded', !expanded);
+      mobileModulesSubmenu.classList.toggle('hidden');
+    });
+
+    // Scroll-triggered animations for About Us
+    const contentSlide = document.querySelector('#about .content-slide');
+    const imageSlide = document.querySelector('#about .image-slide');
+
+    function checkAboutVisibility() {
+      const triggerBottom = window.innerHeight * 0.85;
+      if(contentSlide) {
+        const rectContent = contentSlide.getBoundingClientRect();
+        if (rectContent.top < triggerBottom) {
+          contentSlide.classList.add('visible');
+        }
+      }
+      if(imageSlide) {
+        const rectImage = imageSlide.getBoundingClientRect();
+        if (rectImage.top < triggerBottom) {
+          imageSlide.classList.add('visible');
+        }
+      }
+    }
+
+    window.addEventListener('scroll', checkAboutVisibility);
+    window.addEventListener('load', () => {
+      checkAboutVisibility();
+    });
+
+    // FAQ toggle
+    const ayuFaqs = document.querySelectorAll('#ayu-faqs .ayu-faq-item');
+    ayuFaqs.forEach((item) => {
+      item.addEventListener('click', () => {
+        const index = item.getAttribute('data-index');
+        const answer = document.getElementById(`ayu-answer-${index}`);
+        const arrow = item.querySelector('.ayu-faq-arrow');
+        const isOpen = answer.classList.contains('open');
+        if (isOpen) {
+          answer.classList.remove('open');
+          arrow.classList.remove('open');
+          item.setAttribute('aria-expanded', 'false');
+        } else {
+          // Close all others
+          document.querySelectorAll('#ayu-faqs .ayu-faq-answer.open').forEach((el) => el.classList.remove('open'));
+          document.querySelectorAll('#ayu-faqs .ayu-faq-arrow.open').forEach((el) => el.classList.remove('open'));
+          document.querySelectorAll('#ayu-faqs .ayu-faq-item[aria-expanded="true"]').forEach((el) => el.setAttribute('aria-expanded', 'false'));
+          answer.classList.add('open');
+          arrow.classList.add('open');
+          item.setAttribute('aria-expanded', 'true');
+        }
+      });
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.click();
+        }
+      });
+    });
+
+    // Banner Carousel
+    const bannerImages = document.querySelectorAll('.banner-image');
+    const bannerTitle = document.getElementById('bannerTitle');
+    const bannerDesc = document.getElementById('bannerDesc');
+
+    const bannerTexts = [
+      {
+        title: "Streamline Your Hospital Operations",
+        desc: "AyuCare offers a comprehensive hospital management system to simplify patient care and administration."
+      },
+      {
+        title: "Expert Medical Consultations",
+        desc: "Connect with top doctors and specialists through our integrated consultation platform."
+      },
+      {
+        title: "Efficient Nursing and Staff Management",
+        desc: "Manage nursing stations and staff workflows with intuitive tools designed for healthcare professionals."
+      }
+    ];
+
+    let currentIndex = 0;
+    const totalImages = bannerImages.length;
+
+    function showBanner(index) {
+      bannerImages.forEach((img, i) => {
+        if(i === index) {
+          img.classList.add('active');
+        } else {
+          img.classList.remove('active');
+        }
+      });
+      bannerTitle.textContent = bannerTexts[index].title;
+      bannerDesc.textContent = bannerTexts[index].desc;
+    }
+
+    function nextBanner() {
+      currentIndex = (currentIndex + 1) % totalImages;
+      showBanner(currentIndex);
+    }
+
+    setInterval(nextBanner, 6000);
+
+    // Initialize first banner
+    showBanner(currentIndex);
+  </script>
+ </body>
+</html>

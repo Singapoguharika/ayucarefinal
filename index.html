@@ -1,0 +1,2232 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>AyuCare Hospital Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      background-color: #f7f9fb;
+      font-family: "Inter", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      z-index: 9999;
+      width: 100%;
+      background: white;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+    }
+    /* Banner image container */
+    .banner-container {
+      position: relative;
+      width: 100%;
+      height: 50vh;
+      max-height: 380px;
+      overflow: hidden;
+      margin-top: 80px; /* nav height approx */
+    }
+    .banner-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .banner-text-container {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(4, 78, 74, 0.85),
+        rgba(4, 78, 74, 0.4) 50%,
+        transparent
+      );
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 90vw;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      color: white;
+      font-family: "Playfair Display", serif;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+    .banner-text-container h1 {
+      font-weight: 800;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: 1px;
+    }
+    .banner-text-container p {
+      font-size: 0.95rem;
+      max-width: 600px;
+    }
+    @media (min-width: 640px) {
+      .banner-container {
+        height: 60vh;
+        max-height: 420px;
+      }
+      .banner-text-container h1 {
+        font-size: 2.5rem;
+      }
+      .banner-text-container p {
+        font-size: 1.15rem;
+      }
+    }
+    @media (min-width: 1024px) {
+      .banner-container {
+        height: 70vh;
+        max-height: 720px;
+      }
+      .banner-text-container h1 {
+        font-size: 3.5rem;
+      }
+      .banner-text-container p {
+        font-size: 1.5rem;
+      }
+    }
+    /* Feature boxes container */
+    #features {
+      position: relative;
+      max-width: 7xl;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-top: -3.5rem;
+      z-index: 20;
+      user-select: none;
+    }
+    /* Feature boxes */
+    .feature-box {
+      border-radius: 1rem;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: default;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px -5px rgb(0 0 0 / 0.1);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      background-clip: padding-box;
+      user-select: none;
+    }
+    .feature-box:hover,
+    .feature-box:focus-within {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 30px -10px rgb(0 0 0 / 0.2);
+      outline: none;
+    }
+    .feature-box i {
+      font-size: 3rem;
+      margin-bottom: 0;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .feature-box h3 {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin: 0;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+    /* Distinct background colors for each box */
+    .feature-doctor {
+      background: #68d1c8; /* teal-400 */
+    }
+    .feature-billing {
+      background: #7895d6; /* blue-600 */
+    }
+    .feature-lab {
+      background: #6dccb1; /* green-600 */
+    }
+    .feature-new {
+      background: #f59e0b; /* amber-500 */
+    }
+    /* Square decorative shapes behind feature boxes */
+    .feature-box::before {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      opacity: 0.15;
+      top: -25px;
+      right: -25px;
+      border-radius: 0.5rem;
+      transform: rotate(45deg);
+      z-index: 0;
+      transition: opacity 0.4s ease;
+    }
+    .feature-doctor::before {
+      background: #14b8a6; /* teal-500 */
+    }
+    .feature-billing::before {
+      background: #3b82f6; /* blue-500 */
+    }
+    .feature-lab::before {
+      background: #22c55e; /* green-500 */
+    }
+    .feature-new::before {
+      background: #b45309; /* amber-700 */
+    }
+    .feature-box:hover::before,
+    .feature-box:focus-within::before {
+      opacity: 0.2;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      #features {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: -2rem;
+      }
+      .feature-box {
+        max-width: 100%;
+      }
+    }
+    @media (max-width: 640px) {
+      #features {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: -1rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+      .feature-box {
+        padding: 1rem 0.75rem;
+      }
+      .feature-box i {
+        font-size: 2.5rem;
+      }
+      .feature-box h3 {
+        font-size: 1.125rem;
+      }
+    }
+    /* About Us Section */
+    #about {
+      max-width: 7xl;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      align-items: center;
+    }
+    #about > div {
+      width: 100%;
+    }
+    #about h2 {
+      font-family: "Playfair Display", serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: rgb(15 118 110 / var(--tw-text-opacity, 1));
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    #about p {
+      color: #374151;
+      font-size: 1.125rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    #about img {
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 20px rgb(0 0 0 / 0.1);
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      object-fit: cover;
+    }
+    @media (min-width: 768px) {
+      #about {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+      #about > div {
+        width: 50%;
+      }
+      #about h2,
+      #about p {
+        text-align: left;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+    /* Products Carousel Vue 3 */
+    /* Prevent horizontal scrollbar */
+    body, html {
+      overflow-x: hidden;
+    }
+    .carousel {
+      perspective: 1200px;
+      overflow: visible;
+      position: relative;
+      height: 480px;
+      max-width: 100vw;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      box-sizing: border-box;
+      /* Center carousel horizontally */
+      display: flex;
+      justify-content: flex-start; /* keep flex-start for absolute positioning */
+      align-items: center;
+      /* Shift right by 12vw on desktop */
+      margin-left: auto;
+      margin-right: 12vw;
+    }
+    .card {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 260px;
+      height: 380px;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgb(0 0 0 / 0.3);
+      cursor: pointer;
+      user-select: none;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s ease;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      will-change: transform;
+    }
+    .card-header {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #0d9488;
+      padding: 0.5rem 1rem;
+      background: rgba(240 253 250 / 0.9);
+      text-align: center;
+      user-select: text;
+      flex-shrink: 0;
+      border-bottom: 1px solid #0d9488;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+      z-index: 10;
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      flex-grow: 1;
+      pointer-events: none;
+      user-select: none;
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+    }
+    /* Position cards in 3D carousel */
+    .card[data-pos='0'] {
+      transform: translateX(calc(-130px * 4)) translateZ(-300px) scale(0.6);
+      z-index: 1;
+      filter: brightness(0.6);
+      opacity: 0.5;
+      box-shadow: none;
+    }
+    .card[data-pos='1'] {
+      transform: translateX(calc(-130px * 3)) translateZ(-150px) scale(0.75);
+      z-index: 2;
+      filter: brightness(0.75);
+      opacity: 0.7;
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.15);
+    }
+    .card[data-pos='2'] {
+      transform: translateX(calc(-130px * 2)) translateZ(-75px) scale(0.85);
+      z-index: 3;
+      filter: brightness(0.85);
+      opacity: 0.85;
+      box-shadow: 0 8px 20px rgb(0 0 0 / 0.2);
+    }
+    .card[data-pos='3'] {
+      transform: translateX(calc(-130px * 1)) translateZ(-30px) scale(0.95);
+      z-index: 4;
+      filter: brightness(0.95);
+      opacity: 0.95;
+      box-shadow: 0 10px 25px rgb(0 0 0 / 0.25);
+    }
+    .card[data-pos='4'] {
+      transform: translateX(0) translateZ(0) scale(1.1);
+      z-index: 10;
+      filter: brightness(1);
+      opacity: 1;
+      box-shadow: 0 15px 35px rgb(0 0 0 / 0.35);
+    }
+    .card[data-pos='5'] {
+      transform: translateX(calc(130px * 1)) translateZ(-30px) scale(0.95);
+      z-index: 4;
+      filter: brightness(0.95);
+      opacity: 0.95;
+      box-shadow: 0 10px 25px rgb(0 0 0 / 0.25);
+    }
+    .card[data-pos='6'] {
+      transform: translateX(calc(130px * 2)) translateZ(-75px) scale(0.85);
+      z-index: 3;
+      filter: brightness(0.85);
+      opacity: 0.85;
+      box-shadow: 0 8px 20px rgb(0 0 0 / 0.2);
+    }
+    .card[data-pos='7'] {
+      transform: translateX(calc(130px * 3)) translateZ(-150px) scale(0.75);
+      z-index: 2;
+      filter: brightness(0.75);
+      opacity: 0.7;
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.15);
+    }
+    .card[data-pos='8'] {
+      transform: translateX(calc(130px * 4)) translateZ(-300px) scale(0.6);
+      z-index: 1;
+      filter: brightness(0.6);
+      opacity: 0.5;
+      box-shadow: none;
+    }
+    /* Hide cards outside 0-8 positions */
+    .card[data-pos='-1'],
+    .card[data-pos='9'],
+    .card[data-pos='10'],
+    .card[data-pos='11'] {
+      display: none;
+    }
+    /* Focus styles */
+    .card:focus-visible {
+      outline: 3px solid #0d9488;
+      outline-offset: 3px;
+      z-index: 20 !important;
+    }
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .carousel {
+        height: 420px;
+        margin-left: auto;
+        margin-right: auto;
+        justify-content: center;
+      }
+      .card {
+        width: 220px;
+        height: 320px;
+      }
+      .card[data-pos='0'],
+      .card[data-pos='8'] {
+        transform: translateX(calc(-110px * 4)) translateZ(-300px) scale(0.55);
+      }
+      .card[data-pos='1'],
+      .card[data-pos='7'] {
+        transform: translateX(calc(-110px * 3)) translateZ(-150px) scale(0.7);
+      }
+      .card[data-pos='2'],
+      .card[data-pos='6'] {
+        transform: translateX(calc(-110px * 2)) translateZ(-75px) scale(0.85);
+      }
+      .card[data-pos='3'],
+      .card[data-pos='5'] {
+        transform: translateX(calc(-110px * 1)) translateZ(-30px) scale(0.95);
+      }
+      .card[data-pos='4'] {
+        transform: translateX(0) translateZ(0) scale(1);
+      }
+    }
+    @media (max-width: 640px) {
+      .carousel {
+        height: 320px;
+        margin-left: auto;
+        margin-right: auto;
+        justify-content: center;
+      }
+      .card {
+        width: 180px;
+        height: 260px;
+      }
+      .card[data-pos='0'],
+      .card[data-pos='8'] {
+        transform: translateX(calc(-90px * 4)) translateZ(-300px) scale(0.5);
+      }
+      .card[data-pos='1'],
+      .card[data-pos='7'] {
+        transform: translateX(calc(-90px * 3)) translateZ(-150px) scale(0.65);
+      }
+      .card[data-pos='2'],
+      .card[data-pos='6'] {
+        transform: translateX(calc(-90px * 2)) translateZ(-75px) scale(0.8);
+      }
+      .card[data-pos='3'],
+      .card[data-pos='5'] {
+        transform: translateX(calc(-90px * 1)) translateZ(-30px) scale(0.9);
+      }
+      .card[data-pos='4'] {
+        transform: translateX(0) translateZ(0) scale(1);
+      }
+    }
+    /* Fade transition for selected detail */
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: opacity 0.5s ease;
+    }
+    .fade-enter-from,
+    .fade-leave-to {
+      opacity: 0;
+    }
+    /* FAQ Section */
+    #faq h1 {
+      font-family: 'Playfair Display', serif;
+    }
+    #faq button {
+      font-family: 'Playfair Display', serif;
+    }
+    #faq p {
+      font-family: 'Playfair Display', serif;
+    }
+    /* Technical Related Products Feature Boxes */
+    #technical-features {
+      max-width: 7xl;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      user-select: none;
+    }
+    #technical-features > div {
+      background: #0f766e;
+      color: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 20px rgb(0 0 0 / 0.1);
+      cursor: default;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    #technical-features > div:hover,
+    #technical-features > div:focus-within {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 30px rgb(0 0 0 / 0.2);
+      outline: none;
+    }
+    #technical-features h3 {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    #technical-features p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    /* Our Clients scrolling */
+    @keyframes scrollLeft {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    .scrolling-wrapper {
+      display: flex;
+      width: max-content;
+      animation: scrollLeft 30s linear infinite;
+    }
+    .scrolling-container {
+      overflow: hidden;
+      width: 100%;
+    }
+    /* Contact Section */
+    #contact {
+      max-width: 7xl;
+      margin: 4rem auto 6rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    @media (max-width: 768px) {
+      #contact {
+        grid-template-columns: 1fr;
+      }
+    }
+    .contact-info {
+      font-family: "Inter", sans-serif;
+      color: #1f2937;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .contact-info h3 {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: #0f766e;
+      margin-bottom: 1rem;
+    }
+    .contact-info > div {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1rem;
+    }
+    .contact-info i {
+      color: #0f766e;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .why-choose {
+      font-family: "Inter", sans-serif;
+      background: #e0f2f1;
+      border-radius: 1rem;
+      padding: 2rem;
+      color: #064e3b;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      user-select: none;
+    }
+    .why-choose h4 {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .why-choose p {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .why-choose ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .why-choose li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .why-choose li i {
+      color: #059669;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .why-choose button {
+      align-self: flex-start;
+      background-color: #059669;
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: "Inter", sans-serif;
+      font-size: 1rem;
+      border: none;
+      user-select: none;
+    }
+    .why-choose button:hover,
+    .why-choose button:focus {
+      background-color: #047857;
+      outline: none;
+    }
+    /* Contact Form */
+    .contact-form {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 10px 20px rgb(0 0 0 / 0.1);
+      font-family: "Inter", sans-serif;
+      color: #1f2937;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .contact-form h3 {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: #0f766e;
+      margin-bottom: 1rem;
+    }
+    .contact-form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+      color: #374151;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      font-family: "Inter", sans-serif;
+      color: #111827;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #059669;
+      box-shadow: 0 0 0 3px rgb(5 150 105 / 0.3);
+    }
+    .contact-form button {
+      background-color: #059669;
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-family: "Inter", sans-serif;
+      font-size: 1rem;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+    .contact-form button:hover,
+    .contact-form button:focus {
+      background-color: #047857;
+      outline: none;
+    }
+    /* Footer */
+    footer {
+      background-color: #0f766e;
+      color: white;
+      padding: 3rem 1.5rem;
+      font-family: "Inter", sans-serif;
+    }
+    .footer-content {
+      max-width: 7xl;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+      align-items: start;
+    }
+    footer img {
+      object-fit: contain;
+      width: 220px;
+      height: 80px;
+      user-select: none;
+    }
+    footer p {
+      font-size: 1rem;
+      line-height: 1.5;
+      max-width: 320px;
+    }
+    footer h5 {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: #a7f3d0;
+    }
+    footer ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    footer ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    footer ul li a:hover,
+    footer ul li a:focus {
+      color: #6ee7b7;
+      outline: none;
+    }
+    footer ul li.flex {
+      align-items: center;
+      gap: 1rem;
+    }
+    footer ul li.flex i {
+      flex-shrink: 0;
+      font-size: 1.5rem;
+      color: #6ee7b7;
+      margin-top: 0.25rem;
+    }
+    footer .flex.space-x-8 a {
+      color: #9ca3af;
+      transition: color 0.3s ease;
+    }
+    footer .flex.space-x-8 a:hover,
+    footer .flex.space-x-8 a:focus {
+      color: #6ee7b7;
+      outline: none;
+    }
+    footer p.mt-12,
+    footer p.mt-2 {
+      max-width: 320px;
+      font-size: 0.875rem;
+      color: #9ca3af;
+      line-height: 1.4;
+    }
+    footer p.mt-2 a {
+      color: #6ee7b7;
+      text-decoration: none;
+      transition: text-decoration 0.3s ease;
+    }
+    footer p.mt-2 a:hover,
+    footer p.mt-2 a:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="bg-[#f7f9fb]">
+  <nav class="bg-white shadow-md fixed top-0 z-50" role="navigation" aria-label="Primary Navigation">
+    <div
+      class="max-w-[1280px] mx-auto flex items-center justify-between h-20 px-4 sm:px-6 md:px-8"
+    >
+      <div
+        class="w-[180px] md:w-[250px] h-16 md:h-20 rounded-md flex items-center justify-center flex-shrink-0 select-none"
+      >
+        <a href="index" aria-label="AyuCare Hospital Management System Home">
+          <img
+            alt="AyuCare Hospital Management System logo with white text on blue background, rectangular shape"
+            class="object-contain h-12 md:h-16"
+            height="60"
+            src="images/logoayucare.png"
+            width="200"
+          />
+        </a>
+      </div>
+      <ul
+        class="hidden md:flex items-center gap-8 text-[20px] text-[#00629e] font-medium select-none relative"
+        id="navLinks"
+      >
+        <li>
+          <a class="hover:text-[#1f97dc] transition" href="/" tabindex="0">Home</a>
+        </li>
+        <li>
+          <a class="hover:text-[#1f97dc] transition" href="aboutus" tabindex="0">About</a>
+        </li>
+        <li class="relative" id="modulesMenu">
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="flex items-center gap-1 focus:outline-none text-[#00629e] hover:text-[#1f97dc] transition font-medium"
+            id="desktopDropdownBtn"
+            type="button"
+            aria-controls="modulesDropdown"
+            aria-label="Toggle Products submenu"
+          >
+            Products
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </button>
+          <ul
+            aria-label="submenu"
+            class="absolute top-full left-0 mt-1 bg-[#f7f9fb] shadow-lg rounded-md min-w-[220px] max-w-[350px] whitespace-nowrap hidden z-50"
+            id="modulesDropdown"
+            role="menu"
+          >
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="out-patient-management"
+                role="menuitem"
+                tabindex="-1"
+                >Out-Patient Management</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="In-patient-management"
+                role="menuitem"
+                tabindex="-1"
+                >In-Patient Management</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="clinicalmanagement"
+                role="menuitem"
+                tabindex="-1"
+                >Clinical Management</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="pharmacy"
+                role="menuitem"
+                tabindex="-1"
+                >Pharmacy</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="OT-management"
+                role="menuitem"
+                tabindex="-1"
+                >OT Management</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="digitalrecord"
+                role="menuitem"
+                tabindex="-1"
+                >Digital Records</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="laboratory"
+                role="menuitem"
+                tabindex="-1"
+                >Laboratory</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="radiology"
+                role="menuitem"
+                tabindex="-1"
+                >Radiology</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 text-black hover:bg-[#1f97dc] hover:text-white transition"
+                href="revenue-analysis"
+                role="menuitem"
+                tabindex="-1"
+                >Revenue Analysis</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a class="hover:text-[#1f97dc] transition" href="patient-portal" tabindex="0">patient-portal</a>
+        </li>
+        <li>
+          <a class="hover:text-[#1f97dc] transition" href="whychoose-us" tabindex="0">whychoose-us</a>
+        </li>
+        <li>
+          <a class="hover:text-[#1f97dc] transition" href="testimonals" tabindex="0">Testimonials</a>
+        </li>
+        <li>
+          <button
+            class="bg-[#00629e] hover:bg-[#004a75] text-white px-4 py-2 rounded transition font-medium"
+            onclick="location.href='contactus'"
+            type="button"
+          >
+            DEMO
+          </button>
+        </li>
+      </ul>
+      <button
+        aria-label="Toggle menu"
+        class="md:hidden text-[#0b5fa5] text-3xl focus:outline-none"
+        id="hamburgerIcon"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div class="hidden bg-[#00629e] text-white w-full px-6 pb-6" id="mobileMenu" role="menu">
+      <ul class="flex flex-col gap-4 text-lg select-none" role="menubar">
+        <li role="none">
+          <a class="block w-full" href="/" tabindex="0" role="menuitem">Home</a>
+        </li>
+        <li role="none">
+          <a class="block w-full" href="aboutus" tabindex="0" role="menuitem">About</a>
+        </li>
+        <li role="none">
+          <button
+            aria-controls="mobileModulesSubmenu"
+            aria-expanded="false"
+            class="flex justify-between items-center w-full font-medium"
+            id="mobileModulesBtn"
+            type="button"
+            aria-haspopup="true"
+            aria-label="Toggle Products submenu"
+          >
+            Products
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </button>
+          <ul
+            class="hidden flex flex-col bg-white text-black rounded-md mt-2 overflow-hidden"
+            id="mobileModulesSubmenu"
+            role="menu"
+            aria-label="Products submenu"
+          >
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="out-patient-management"
+                tabindex="0"
+                role="menuitem"
+                >Out-Patient Management</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="In-patient-management"
+                tabindex="0"
+                role="menuitem"
+                >In-Patient Management</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="clinicalmanagement"
+                tabindex="0"
+                role="menuitem"
+                >Clinical Management</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="pharmacy"
+                tabindex="0"
+                role="menuitem"
+                >Pharmacy</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="OT-management"
+                tabindex="0"
+                role="menuitem"
+                >OT Management</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="digitalrecord"
+                tabindex="0"
+                role="menuitem"
+                >Digital Records</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="laboratory"
+                tabindex="0"
+                role="menuitem"
+                >Laboratory</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="radiology"
+                tabindex="0"
+                role="menuitem"
+                >Radiology</a
+              >
+            </li>
+            <li role="none">
+              <a
+                class="block px-5 py-2 hover:bg-[#00629e] hover:text-white transition"
+                href="revenue-analysis"
+                tabindex="0"
+                role="menuitem"
+                >Revenue Analysis</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li role="none">
+          <a class="block w-full" href="patient-portal" tabindex="0" role="menuitem">patient-portal</a>
+        </li>
+        <li role="none">
+          <a class="block w-full" href="whychoose-us" tabindex="0" role="menuitem">whychoose-us</a>
+        </li>
+        <li role="none">
+          <a class="block w-full" href="testimonals" tabindex="0" role="menuitem">Testimonials</a>
+        </li>
+        <li role="none">
+          <a
+            class="block w-full bg-white text-[#00629e] text-center rounded px-4 py-2 font-medium hover:bg-gray-200 transition"
+            href="contactus"
+            tabindex="0"
+            role="menuitem"
+            >Demo</a
+          >
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Banner Section with auto carousel -->
+  <section
+    aria-label="Hero Section"
+    class="banner-container"
+    id="hero"
+  >
+    <img
+      alt="Modern hospital reception area with staff assisting patients, bright and welcoming environment"
+      class="banner-image"
+      style="object-position: 25%; height: 100%; margin-bottom: 100px;"
+      height="720"
+      loading="lazy"
+      id="bannerImage"
+      src="images/people-wearing-face-masks-back-work-office-with-new-normal-team-working-workspace-personal-corporate-company-typing-computer-keyboard-looking-desktop-respecting-social-distancing.jpg"
+      width="1920"
+    />
+    <div class="banner-text-container" id="bannerText">
+      <h1>Streamline Your Hospital Operations</h1>
+      <p>
+        AyuCare offers a comprehensive hospital management system to simplify
+        patient care and administration.
+      </p>
+    </div>
+  </section>
+
+  <script>
+    // Banner images and texts for auto carousel
+    const banners = [
+      {
+        src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd-TFQMUYzww8fOTWcCLVIGjKfRJUWXC7IqA&s",
+        alt: "Modern hospital reception area with staff assisting patients, bright and welcoming environment",
+        title: "Streamline Your Hospital Operations",
+        description: "AyuCare offers a comprehensive hospital management system to simplify patient care and administration."
+      },
+      {
+        src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACoCAMAAABt9SM9AAABzlBMVEX///8AAAADAwP29vamqKzo6Oj4+PiAgIBgYGDs7Ozf4eP//+Hy8vL7+/vw8PD09vbW2NnOz9P09OisrrLDxcnKzNCky+e8vsJkZmerra7S1Na1t7ujpKd3eHf5+vbw9fiYmJj3//+/2eWIio7h6vC+z92p2uaEpbrS3uaSlJgAWY2p0OeanKAAVYzb5uypwdGfuswAXo302t2/2uJFfp+5zdpwb2/G0doAAEoAElDRAAAAE06vAADT3+Ll2dhvmrUASoRmlLRTiq4lcJyNsMYVFRUAL3sAK34AP4QABkijvtF/m6BmmrR8o7jExLe3xNIAG04ASYsAUYISaJZJgalIiKeArLsyMjJ9o8MAFG4AOYMkYJ98lbIAL29LbZ0AQIAARJMAImZlhqqduNNkfKdegaEAPWsAEl2NmKxYaIcALForeJc0peFlu+5yweUhoOFuveic2/bXSk/RKjDUZ3DOCRRwj7vfjIvupavqk6HcZG0WQGp8i6fAaGW3PTuPucRwj4/LeU7cczXXZCDvlFvvoHjuj1ShvIWOt1vS3MCaxHbFWByz0YvJ2LbIppnour3cqqrkycW4GSGvgoa/UU6NqmmnvpOAokrKf4o9Pj8aaoyoAAAbq0lEQVR4nO1di3/btrVGxoqrdEXJae2qfsxwFDBElYqAFiNMmuvClFDHUcw6ieRO89z0Lm5700fWLjdturZrtrRdm27d2nu7dvtvL0DqZYmyHqZs5/fTZ5oEQYoiPx0cHBwcgABMEMCAEVwEW1Fc5dgDEowPfpXS9fLBL3L8gaDOMDqoXJBCJDdz3KEzsMVXV2sHuESamrzAyGZk93R8gVGF5ovFA7AFb+TzudyqiO6eji9YKVcV5VU+8gVgIZfLFXIUYMgczLBcnMbCHIelI7zZQ4OBbIgQRP6qviAbsGquIoQoeKNeF+byLikVCqVVNw3ln1q1LTaJ8iEOCwKbtoPtrI0dG2OZRCbGMgNWioLy3Coa8bowl0NA5IokF1oSoXOAez4ysB65CCu28iNbEFJnCaOSt3odfizJCq2uZDk0srDi5ka3ttK8WtZdt1dpg49lMaRhmQZBDAJYisAy7YHHU7LCi6Fuj7ml8niSFUVxsGuYAeYIVhO2ZyMmaw1EGbNsQ5SxzdQPYju1GrMwNZjNlMZ/jIshIrZho00gK3Rm6yiNHIDZJjZkLjCB3EFEmhRA1pEyh+id13BB2gK1LQQ4dIFrFs0iK3NgMR26nDALcENSyTChcIsV2ZaqYOH4SvgY4RdDigWhRYQtZOEaozYtmRZydWTZwi6lq8SyEJctF1dwQgQyOi5huMDwDAtsIA9ywIngYhMj18IGrHlUCpI0bX2yCBRFSowNWcRhePE/5vCLA0VYULQhMCgCUxBEBZfyANAWpcJllsUFYIIBl9KihUSXUJgcEw8KIcXU5I5js03H9BjxVgyPOiucEo7wimM7nDGGmPCL4eNLFql5NqUcbgiHc8PlSCAXeACJNOUGt/TqrngFF1mNGls2d6MoQdDsypo+/fNjheemu27xiH7hLp2V/NWJY4dfpTpuMtTOGj+6asPzJ34WDU689FJkl3qy4yaPiqwOO0s7cRzJOqHtvcujKobMSOt6Oi3XfiIW1QOqR4zuSh1kjdk4hJ6CZXcdUF4tvMnwpoOJ42wmTtRv79jAvxuHUZMRs8xMaWTL5HjJYh6ybVwt9qtBY8HdnX/2F+fP+4v8+8X5+s5hQH7Rs/631b9c3c+JE13291jBlE40imC5W7b2IBbcHJw/NTMdTyTiM2DOhgk4NwNjM6ck/JNOjRHxUzH5dfG5qcTcqcSpqVPB/Wj733XEMJUFalRqbnH/82KB2J87+8zZZ545K/FME23Jnjg7yEl7zu+Hl46GLAghxnh5//PqZC1KgMVFYzFCpE2nATQTbJx2rKwE20Rb3uLiz46CLAq4hGMMRlbKWFh6PnN66VQ6rWla2kcz0QOtw3qQ3PsBfe7X16+vbW+vrW+v7axdv3z5N5d3XpWbtcvr17fXf7O+ffPm9fW17fXXuNq/fnltbfu/fg2NIyLLq9VqGCxjVjZZOcsIYyRLmFxMwkijUV7XWSlNS8pH1XT53BFBx7+99eHu7us7t3Y/2Xm1tru7s+pv3qjVbtVqb+y8cfNmdUe8sfMmv8lrb9QsecT77yMiSwBZBjGjXqg30WzkNsmKjqUmWRcuXrpw5dLFixev3L528cqVaxduy+SVKxfUcvHihbfeuiC3l96+feHilUsyT555BerDkJXu9MOMShYFGy5fzp879U5YPxHpJCtyriRSKak2VQ8f1NQWxjWV0fivI55KB2f5p6TTg5IFPbeSL5Rq8ukO7GDwTQdAcys0H9aw6pSsQxT7RfW/2OMAAANLFhIGyRVyOSK6HSlDAleWJSp54d0IM3/Z0ZHVB4PfDxSArxYK+cgiFZZXXTcsv5ssI9DtuoSm7J1zvtWTDROBsWKIH49AQ/W950ftj+5Cj3ivbCPkoSVZiZlYIpE4OTMzvfLunTt3fvfu+3fefffOcSZLPZtZKeRGDwwZDJ0KXt5cbDozPxOfyWQyK++9//s777/7/u9/f+fOmO+jG0OQBXexwPhGoTDmlmRoMTQMXTMkTr373nvv/e6OXL33/nhvIwRD6VBBTFDM5fq0fzuhexR7ju1h4iFmIcuygdwQTA0qdGJbFt60GfdMq16+QyRLcRXg0IteOzrJMsJQP2ZhzGW9vzqk7QBrgqrODkyBa5mUgyIQjucJvIWLbIsVHbNKbIKsRs3YrzbU2yBvLbDCWrbYGOW+43482f4gJFtmLFiCdkhwTDCjWrJrqJ9npROqV5VASdYu2LC8LAeuFFG7uKxIK1LiItMs2cQG5Xpobphkyb3gJ9OVlLWuLakJyGnl6bo6y4g3M1Td0ADQmtWqZFqbap01CDrI2sftZzmMVXK1vCuGDHmAzGScYY7LNUQgEcIGxDChiShgBJmSP0SQE2eNoO/u2tA4vbSwsLS0NL8we3o2Fp/NzGcCcjKp03NgfjYzOzc7ncn4WYnY7Kw8eXopkZhdyiwtLMUTswqZ2Zg6PDUniZ1KKJoXZo3Z7p6t/dBBVu+uCmmLVtxqTuSr4+5kDymGDVUgtykpEJpeL2uaUmaGJv+UrASntEqtkh1NM2JJLZmUTXFdXSWZ9G02uZJ58UxiqDsbVLKkSQoq3CrA6IzSXmiSFR9MZyme0nrdKaEfos7qXQw9D7nEquADxN8OiCA208bIOebNnX17DKUcq26qcd+SYSPkL3Mn6l1PLUlawW2AeA9QMyWJ/mUb4i/WEy+mNX1kaMMo+MNHrElWIhbXkylNsy+vb69tv7a+tra9tvbarbXt7e311y6vXd++vLZ22V3flgevr12+fHnt9bsvvPA/L7zwwQcvSNy7+8IHwU78IN6e4SQrUiDWV0SbZCVPL8zK+m1hYf631utC7JSFVaMfvvnpzR1r91Zttyb/d3dv7rxZq+6KW7vy4Iev37338f2P/nDvo4/u3//4j3fv3bv/0f17f/jgl2Mjy2iu6rtGD+ffKD5BXMKVAclK+6ZVSrZ2AFIuy4sXL1z45MKVS29/euGi8mq+ee3alQufXLnw6dsXr8kMmXXp0luf/WcLf2zuxBeVJ16VxfpGD/a1YK9tMwhZQTG0nKK9yRlFuybn4B3b2cCsRh3XAVz+VR3HxawoGAcUl9LSPB/Cw9UYh4cq1eqAZGlA+SxTceXExCsSGKtlJaGUVLDvb/zdQGmtoBfbEGumUnF5oQAw5SfjMuHvBZmwmQc7kIr3Ist0BasxCmnWrdmCOlxwE9hFJk3wLSgsRx62gORRHhdcoME1nVPI1zsL3UrfIIEmWefOnCFnzpw9o3C2vpWpRkb7phttBxoXkW0UIq/TBn/nDKkn1EnUzw2+J/hQF1mBEWUx2WazXUI4prJhV2Ur1bJrY4FkS2WDiCKxlxk3hYssU6oPF4f68EJRKRTyfqvGRC7u5xhrkfXKGXL1qqVu+cHVq1cfdNPQH/KDrc/evmrdbuSflrl/CtKvXP1T85QHre8JkO0hWbZy0JtIPpGOEAY2Sst9BpkDbGDbQI3sgSYGmGGIDNtgAzcW9VyhEAxFWeai0q82aZKVPRegvs1m1eIn6lApf/dcsD1XX51rHDjXQP28bHC1+pn1jNbpjePnGhdXOHTTgedzgae1UBE9h6U00DIdQKPmHLl/qd4TLWtD1but6zKtqa4Jladri77vR6YN/4gepP1jRqO3YtEAHYEh4zYdIHWxemCYz1VzfTqkW2Rp0j5KxGPJxGwslUgmY6lUbCqpxaeSenxQ9owkSPg+BlmnqrSfqfs+isDzoKmWph5r5Cd1bWqqnk6jU8EJAVm4XGZlIpcD99zsD4KcClBeC7Saz6+W+pzdZpQa2tzszMnE0tTUvHIhLMzI1XRmdnY+OeA3S4JmphVFAVmBt0GRpdWJ88lKTTXyk3osM20E6fRZCNrIOqzmV5Uz1yypsm6r5kqfs+NtxTAw+pIjF8Pgo4Zh6EHad2oqf4ZWTwfE+emAOCPY0XyagM/aoZKVruY9kSv5Gh6rEo+Vd1HFOmQJMcsNpyNlxI+pow2yYvFY3EcqPjJiocnwdCosP3bIZNnLy8ssX1WWhlEt9h3W1CZZjRs8gGQl9cCJo6SpZZTrTY80UF5UP50O0gH0pmQZg/dIRwG2XNkS1ZKvq1h/9dh0/mkJqeBjsVRsNhafkr9xLJZIDekRNlJSwSv1vUfBGy0Fr0jR6gpe8xX8XKKe31TwA5JFIrEpaCm3XCgWCpBBcwBDtklWck4q+PmZuamlREIp+Pmpmfnp2aGkTJIVa1PwM36m0l96q2bUtHYFr801FLx25lSQGJAs2rQpipXKyMSJYqGYy+Xy0BSDXKPdzlLPqLoOR/1q+fRKi+u+QtfaFbxuNNxVqmcy8F0p4gwDNNL+BQYvhrTZkGM38iOTBS1XYVD7JNau4JVul/bV6Bq+iY6LpMLyU4mu82MNyerrWvLJUh4DM18oHdYYyigteEMLOmrrCr6p1I1mQKGSLL1N2dfrg27JouWsqsOZqrtVNS4Xv8uQYblVAYz+IHC3JLnKOcawkSGGt0w5B1WMXCpMD7g1VlSN9CIRgnLhoBLggHldLcymzkondH1KGuCJ2URsKhZLTiUSsdSMTMq8qVQsNoCnW+qpqbmWgm/qJln0mla7pLBpoCb15NxcPT9p71HwA0mWm8+XciONvU8Lm9eQEJYB6DuG6peusrKlyKJl18K0hjhweJeN2qbgZeNj/qSv4Kcz8/OZ+UxmLjM3PT+dmcpkMrODkTU301LwPg91C76NrGRAok9WfGbGCNLps8PVhpIsd7VYWx1tngJoYcLLolguI8EEcFmZQ4rhBvSw4MwsCsFtxLr62FqmQ9AN3RZJMDx8C14p+KbV3kgbDWXfVPBaXcEbexT84GRt8tUqAF52pBs1bAiVq8dwHPkPsIFNhnTAGAZY7thyvWmzBhE2VRrBLJukQZa0q+rKN3Zw7LlI+AXj6gtbe0E6MYRk2X2GQ0QH0ui+b1rwWkvBt/dlGarWH9SaCAx4X2qaFwlR8C3JCuIhNG0EyeKOwxgzmb8a72xEbQG4DbISmia1uVLwelLTpMEYhHvHkkllVQ6EVF2pdyp4HXQreN8oTbXyz/k6a2A7C1tt4MO1NIZFW2BIoytsblGbysxNTT03pcemZKk4KWtFadAnEgkDDEzWSX/bacGHKXifrHgrv+GiOYpBA31AuiWr1ZBO64E+1lvbwa6aCix130XTZrW3p7U2Cz7Zbs37FzjshvRgyHaRlUrGkwrto3NSyTpUItUPwRn+mckgUf9sqvnxpPqS5iH/C+ufCfJTA9tZh4lundWQoj8/bOLPMOgj9Y3socMWQhEcU/2ri4FQLeqLT/l+eN333zfIUm5lotzKLTMqvsysTbGJPAJLhjA3mAVKwNMB5py6TpFDzrHrmW4x8tl8uothcknaofOz059/8fDLL7/48osvvvzL58neT92Di5BUOxZXmIMw/OHuxx/fy2KUSMAV9NXXXxHbdh59/fU3Pz3q0lmtDot4EXubrmULNQ0GdaWN5QhTmuCO51HPdj2KgecK5IzmtT9Xrnm92uPdCl5PTfm2zl8///zhw88f/uXzh5//degRPf3O11ceEPoA3b137193GaFECg/+5m//xLuEffv1N1993U1W6wGQBTjBJcKLmNSEi5HHqWdJm5JwyiAHtnCoS7A5EllYAGbAHi6tbslqFJ+/tyE5JFcDsLmoivs/Pvruu38s+ga+bjz69pHqEXvqW4mnushqORR0aVcj3cYGRMjAgGGszG2iul9tfy5czACGCI5WCmW7B/Xq9e8m66mjh2RsH7LGjGVR6hVv2a3gn3r50aP/6ITM68p85KP7vJBTh0eX6XBYwWxmkYqNHkLZbTo89fLLL3eTFZKp8l7uJCvAi9GTdUizRCNXTWHWQ92F1IZHXQgV4kdVDD3lP0z3COXtliytHvKvwv8bt6pMbGOP9aR6uBrjVlpXC7rA/H9Na9hmDS9oc9tZcbbO02Vr1L9QtwV/GMXQsIqBunJB1iSmSToGlNPGozbJis/NT2dmpudU667RuknqM1PTezrvE7GkETs5rZp3bS2S0TuxG9DgWQDC2oaHElPqVgLZqaX3GynUTlZCtZkTcd/TWT+YNGTmnmaabJIYut+xsIesA7dOtGBeryMiq7walHbad3qVZodFN1QR6SiHetC61vc0rpP9Wz+hP1nXz2fsY5R2QVQlItFpMLcMMFGTBu6PBllGstUcjqcgTCf9wE+5JJMwFXRlpZIwmaoHjCYXg208nWxEijZDScOAN33UNwFIojvTfmlgBV+FaT37WiSDUaqr0vbvb802yKqrXwhlMdO/k/geQV/9ao9+fAQDNbz43UcvIqmLH/0ojW2U9JW2/o+Pvk9r+ot//3s6uQ/0nfXrl19bfe3W9vra2tr29evbufX1yzuXr6/LzYfb+fX1vIq3X19zfzU4WYbqeahEMbfDgC/DaJIVFBZHCCpi/3v//kf3CFVttwf2T3/7ynqgdkTis3v/JxPOV9989e3XDyy6Sall/3D/3iuCfP/Fw/Zu1bokppq7mlfYtcTrb+7cENaOVbu1s7NzU7xqvcprO7Xczqu3dj68JazdnZ23djrI2qelF8TpFUcky2DIxAZzbAYhZsxAzLBtw29TqcBpFtYXGW+S5dfncRvZdvKHz+7+8K8gvnsl8c+ffkROYsXGU7HPPvtOzd30408S8uicvYJjf5RnTtnfP/zri/v1YKRuX7l06eK1Tz69pHDx2qVL1+T/1Uv+9vbbcv3bawqXbneQxXEWZx3bn/4dB2sHKwbhcsUPB9+qjjb4fgOjmjA96EKXqEgHi9GaBZEALlk2TTeYttlk1PHNCLl2yKYTkNWl3vcb+rt4CoBTQ96bqhLS6bSh6VAmoFxJvQjkSqaMViS8Djp0lt4ZK+9DHsjeUK9UyOUKfKQKE9YA2HJREXMgKCY2EIIIS0cU8M3yFjUd/6odCjHeg6wjw6DzZ2XzhbxP1upoFaLwsoKwLcKFYD5Z3qZleaxKOEEbmHs+WR11cewopo3bD4P64HGp5AtZsf/AiNHR0TJ9bMmSCp4o52Hf0UkHQUcxjB23Yjg4WViRNd7Y765i+NiSdQjoKoYTsnqjqxgee52FbGAjPY0AxBgaUG4RQAArGxpDLNu+tj+/NsJyLf8gXDEwTttRPNLjVxsWBXM9wgrIY0Vk0xL2XIOLTZcxl2VdDKiLADc9lyFuCoq4x2rUEoPOjJFumW7dePwkq+jBouswjwtDAJuKmjQfsQuINCMBKjpAuGXgbTCXEkmchzzuYcwgHzDKraKMtXx+NdQ78/iRxYFhUcqEw3VLkYVdWJFmN5eNkrLpMsBrLvDS3CX2hpoqhXMAnE0sBnoPH1qpFCRTleVwsjpMuMeALPXmDQMaaZmAwEhDfyu1lhrPbSC5hX6W1GQGSiPVilIxhwO1GHGF5zZsWzaIhyFr5GeLHIdZG9oVCCoFXigs95Cs8GL45LHBYQ50oi6lhaI/oWs+lKyw2vBnRz0HfDvCJs8fE0g+/5tCrprP5/I5R02CIhd/2hl/8hm5dPSNxaJ7P0B0ODSyZEVYqRQKuXzhhgqTQLBzmZDVRHXVcpRXrGQXw3VWB2JHXerCcThk6TUCKxDaJVAcqDM39eSzw+F8GEJet9DvVUSnFdqSe/DziGaY7ge9WlG2a7nQb5KC+ukLT88OgKfVWfNtyDQw3YaZBk6enGtiqh2JDgRDBRJdPvvxcjQqtIUn+qCDtb2kZTL7s9ZGm+JqD3WJbu5akyxGCBRPS5NWtr8hSMumIFLvNjd8OxbJDKR6eCFSbXNpyMpM3T9BmrZpYNh7JVzvS9YTTzzdgVAJk2xlZjvpOhkgTMZCBW0sZLmUU1RkjsWzAgpXNpsIYe/YFhEMCIvIBrlJ3TInyC2LmuEJKv8wly0s220EG6kQkXOMoMjImpn799ORkbWvL2BIcCKKkAr1vjoK6YbrUICZVxMcWLDsyQa5YzoUYk5MwD1gCdfcAMATgpdxPVgaMRXRaRjpqMialqr/yYVwsup0yWI4IFkxbDK1RBIWwilcRowzwZF625/DXClZFuaUcgI5cRHnUMRNwSSrhHrUlsKFeQ1UbHc3aBw23kbXX2cNRtb0s6rGX+hQWnsEa4RiuBlFA18NjpFaSC26r5WADXW1QVB5Dg0A6wrM11ZGcCTIqxtfyImYrH8rsk72IWtQyWqQ5RySCdEHMGqyziuyzs9EK1nHhayIi2FmvjdZDbqGl6zud/aODWSfUF9U72/Tno+IrOmF0ws/nwkthi2yjq9kGYVC76q3+brRhf6iNZjp0G6URiVZh0cWLu3zWvgmWdNRkbWHsANKVmNk6iEWQ2+fKZpRs9s7s9APoZy1MdWjndOWbGsrhjDWxVlzFO9mqGRZRTUnSi1KqkDPCWIVWmQBbahh9e3xfUunn+uN50OiJfuMgmoE6zZvLbwYLivbnou+c7AODogp57RnVGkkr3Xv9q204bkIviDcKPXjIz2Eo5qrgFTy+bzF87lcj/AlFEX0ydLz+yGCL+ghWWpFlzdyEb2dqJIrFPIMy3UhPICp8xXJo8DY3+yIQDn3Igth27YBj4YssporVCwOilK08qGiFUUx1Jr1YlhV+XQEruHw2nAZmDUhRFRkOYRSIXKytCGP47AQVhzBCKJU03AIMyUGnrFzv+cIzV0GZEtWh1GRBcQNFe+ghFhQYGLTxAxjlvXXOKvcHxG4iuJ7DdFORDCNxyahWcqyat5LfyljtaoClMUYG9ViNGF/VGmrBlnjQqxpddYTe1xYM2NzpC8DVrMsUfXEajTTJObrqh26YyRrbq6tY6ILYyRLAZWE5/abDXkg2F61kM9Z1Uq1NuS7oYZArNsab8fYyHLVey6r1Xz5nBeVqaVjQvFYG6L1oTmxYP7axqZp6afG+d0StdXV0vgkIWrsN+mF3nj70xiBD1BLUQJIOr2bNVEWEoAEZgJCYdrIASbAiAAMB5q6dFAYrVZxiONgKpi9PELo6n0oaaiC11R8mxrJCQ0V15ZWe+mhuoIMLrJbJodAWiC0mHZlAgMsOFGvwjCIU2LCjaZvqY7Y6aUQyHbOwlLwjrZopwBjW0ggWiwLYVYpcKUVYVO3RjxuqpdWuKw0lCAsO8xVAZWSrCJnKhJVkeVRU4AaII7gwtWjnCdvNizEoR2zEX6ZejcYpohy4Fn6KxAQgYkkS5hcZmGhTNRhLmYIIP8wNykSRKfMI8KSBjw18QalnhomRrLeYAEQA0BPJmbmF7rk6rnnmsmF+ZOxg480byJdJPLnxlumJaAFgcmxKx8WOJuAUJ6l3Bj8jSiHiyCUIzGXme+KH3n66dkg0mR+ei4RRH1E8516EGOLbNWfZ8h2nOrpk6oqrd6dIg8NPQ3uYSHha6U2kvY4VlvZT0jVtRBp3MIEE0wwwQQTTDDBBBNMMMEEE0wwwQQTTDDBBBNMMMEEE0wwwQQTTDDBBBNMMCz+H4BPCLgbz18jAAAAAElFTkSuQmCC",
+        alt: "Illustration of a hospital receptionist managing outpatient appointments on a computer screen",
+        title: "Efficient Out-Patient Management",
+        description: "Manage outpatient appointments, registrations, and follow-ups with ease."
+      },
+      {
+        src: "https://media.istockphoto.com/id/1311977471/photo/african-american-tax-professional-female.jpg?s=612x612&w=0&k=20&c=PB-_XOEawWwsXj-O72w6OB23Eyxlbrf-fQhbYfmscz8=",
+        alt: "Photo of hospital ward with nurses attending to in-patients and monitoring equipment",
+        title: "Comprehensive In-Patient Care",
+        description: "Manage in-patient care, bed allocation, and medical records efficiently."
+      },
+      {
+        src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaYu3A5MeOCJMkbEubZ1cBhi8UzBbmcNlgeg&s",
+        alt: "Doctor reviewing clinical charts and patient data on a digital tablet in a consultation room",
+        title: "Streamlined Clinical Management",
+        description: "Support clinical workflows with patient data, diagnostics, and treatment plans."
+      }
+    ];
+    let currentBannerIndex = 0;
+    const bannerImage = document.getElementById("bannerImage");
+    const bannerText = document.getElementById("bannerText");
+
+    function updateBanner(index) {
+      const banner = banners[index];
+      bannerImage.src = banner.src;
+      bannerImage.alt = banner.alt;
+      bannerText.querySelector("h1").textContent = banner.title;
+      bannerText.querySelector("p").textContent = banner.description;
+    }
+
+    setInterval(() => {
+      currentBannerIndex = (currentBannerIndex + 1) % banners.length;
+      updateBanner(currentBannerIndex);
+    }, 5000);
+  </script>
+
+  <!-- Three Highlighted Feature Boxes with 4 boxes -->
+  <section
+    aria-label="What We Do Features"
+    id="features"
+    tabindex="0"
+    class="mt-16"
+  >
+    <article
+      aria-label="Doctor Consultation"
+      class="feature-box feature-doctor"
+      tabindex="0"
+    >
+      <i aria-hidden="true" class="fas fa-user-md"></i>
+      <h3>Hospital management</h3>
+        <p class="text-black-300 text-xs leading-relaxed">
+        AyuCare simplifies hospital operations 
+      </p>
+    </article>
+    <article
+      aria-label="Billing System"
+      class="feature-box feature-billing"
+      tabindex="0"
+    >
+      <i aria-hidden="true" class="fas fa-file-invoice-dollar"></i>
+      <h3>Billing System</h3>
+      <p class="text-black-300 text-xs leading-relaxed">
+      Where accuracy meets efficiency in billing
+      </p>
+    </article>
+    <article
+      aria-label="Lab and Radiology"
+      class="feature-box feature-lab"
+      tabindex="0"
+    >
+      <i aria-hidden="true" class="fas fa-vials"></i>
+      <h3>Lab &amp; Radiology</h3>
+          <p class="text-black-300 text-xs leading-relaxed">
+   Precision in every scan, care in every report
+      </p>
+    </article>
+    <article
+      aria-label="Patient Portal"
+      class="feature-box feature-new"
+      tabindex="0"
+    >
+      <i aria-hidden="true" class="fas fa-user-circle"></i>
+      <h3>Patient Portal</h3>
+          <p class="text-black-300 text-xs leading-relaxed">
+   Secure access to your medical journey
+      </p>
+    </article>
+  </section>
+
+  <!-- About Us Section -->
+  <section
+    aria-label="What is AyuCare"
+    class="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center gap-12 bg-green-50"
+    id="about"
+  >
+    <div class="md:w-1/2 slide-in-left">
+      <h3
+        class="text-2xl font-extrabold mb-5"
+        style="
+          font-family: 'Playfair Display', serif;
+          color: rgb(15 118 110 / var(--tw-text-opacity, 1));
+        "
+      >
+        Your Complete Hospital Management Partner
+      </h3>
+      <p class="text-gray-700 text-base leading-relaxed text-center md:text-left">
+        AyuCare simplifies hospital operations – from patient registration to
+        discharge – including lab reports, prescriptions, billing, pharmacy,
+        and more. Our system is designed to streamline workflows, improve
+        patient care, and enhance administrative efficiency.
+      </p>
+      <p class="text-gray-700 text-base leading-relaxed text-center md:text-left">
+        With AyuCare, experience a seamless integration of all hospital
+        functions, leading to better patient outcomes and increased
+        profitability.
+      </p>
+      <p class="text-gray-700 text-base leading-relaxed text-center md:text-left">
+        Join the growing number of healthcare providers who trust AyuCare to
+        manage their facilities with ease and precision.
+      </p>
+    </div>
+    <div class="md:w-1/2 fadeIn visible">
+      <img
+        alt="Animated illustration of hospital management system dashboard showing graphs, icons, and workflow"
+        class="rounded-lg shadow-lg w-full object-cover"
+        height="200"
+        loading="lazy"
+        src="images/colleagues-working-together-call-center-office.jpg"
+        width="400"
+      />
+    </div>
+  </section>
+
+  <!-- Products Carousel Vue 3 -->
+  <section
+    aria-label="Our Products"
+    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 rounded-lg relative bg-blue-100"
+    tabindex="0"
+    id="app"
+  >
+    <h2
+      class="text-4xl font-semibold mb-6 text-center uppercase tracking-widest relative z-10 ml-20"
+      style="font-family: 'Playfair Display', serif; color: #0d9488;"
+    >
+      Our Products
+    </h2>
+    <br>
+    <div
+      aria-label="Products carousel"
+      class="carousel"
+      role="list"
+      tabindex="0"
+    >
+      <div
+        v-for="(item, index) in items"
+        :key="item.id"
+        class="card"
+        role="listitem"
+        :aria-label="item.title + ' service'"
+        :data-pos="item.pos"
+        tabindex="0"
+        @click="selectCard(item)"
+        @keydown.enter.prevent="selectCard(item)"
+        @keydown.space.prevent="selectCard(item)"
+      >
+        <div class="card-header">{{ item.title }}</div>
+        <img
+          :alt="item.alt"
+          :src="item.url"
+          loading="lazy"
+          width="600"
+          height="400"
+          draggable="false"
+        />
+      </div>
+    </div>
+
+    <transition
+      name="fade"
+      mode="out-in"
+      appear
+      enter-active-class="transition-opacity duration-500"
+      leave-active-class="transition-opacity duration-500"
+    >
+      <div
+        v-if="selected"
+        key="selected"
+        class="max-w-4xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg flex flex-col md:flex-row items-center gap-6"
+        tabindex="0"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <img
+          :src="selected.url"
+          :alt="selected.alt"
+          class="w-full md:w-1/2 rounded-lg object-cover"
+          width="600"
+          height="400"
+          loading="lazy"
+          draggable="false"
+        />
+        <div class="md:w-1/2">
+          <h3
+            class="text-3xl font-semibold mb-4"
+            style="font-family: 'Playfair Display', serif; color: #0d9488;"
+          >
+            {{ selected.title }}
+          </h3>
+        </div>
+      </div>
+    </transition>
+  </section>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    const { createApp, reactive, ref, onMounted } = Vue;
+
+    createApp({
+      setup() {
+        const items = reactive([
+          {
+            id: 0,
+            pos: 0,
+            title: "Out-Patient Management",
+            url:
+              "https://storage.googleapis.com/a1aa/image/44ed5eed-5fe3-45a6-60e5-ed0ae317f4c5.jpg",
+            alt:
+              "Illustration of a hospital receptionist managing outpatient appointments on a computer screen",
+            description:
+              "Efficiently manage outpatient appointments, registrations, and follow-ups with our streamlined system.",
+          },
+          {
+            id: 1,
+            pos: 1,
+            title: "In-Patient Management",
+            url:
+              "https://storage.googleapis.com/a1aa/image/95e220d1-8212-49a6-80c7-867ab752f799.jpg",
+            alt:
+              "Photo of hospital ward with nurses attending to in-patients and monitoring equipment",
+            description:
+              "Comprehensive management of in-patient care, bed allocation, and medical records for hospitalized patients.",
+          },
+          {
+            id: 2,
+            pos: 2,
+            title: "Clinical Management",
+            url:
+              "https://storage.googleapis.com/a1aa/image/325c20ff-a139-49c8-4508-ab36cee3b31f.jpg",
+            alt:
+              "Doctor reviewing clinical charts and patient data on a digital tablet in a consultation room",
+            description:
+              "Support clinical workflows with patient data, diagnostics, and treatment plans all in one place.",
+          },
+          {
+            id: 3,
+            pos: 3,
+            title: "Laboratory",
+            url:
+              "https://storage.googleapis.com/a1aa/image/dcfc4040-2b67-4825-701c-a534245b9acc.jpg",
+            alt:
+              "Laboratory technician analyzing blood samples with microscopes and lab equipment",
+            description:
+              "Manage lab tests, sample tracking, and results reporting with accuracy and speed.",
+          },
+          {
+            id: 4,
+            pos: 4,
+            title: "Radiology",
+            url:
+              "https://storage.googleapis.com/a1aa/image/266e2501-a062-40f3-9672-64e380a1073f.jpg",
+            alt:
+              "Radiologist examining X-ray and CT scan images on multiple monitors in a dark room",
+            description:
+              "Advanced radiology imaging management including X-rays, CT scans, and MRI results integration.",
+          },
+          {
+            id: 5,
+            pos: 5,
+            title: "Pharmacy",
+            url:
+              "https://storage.googleapis.com/a1aa/image/7e82c336-a66d-41a6-7b92-dbd8e51d7618.jpg",
+            alt:
+              "Pharmacist organizing medication bottles and preparing prescriptions in a pharmacy",
+            description:
+              "Streamline pharmacy inventory, prescriptions, and dispensing processes for better patient care.",
+          },
+          {
+            id: 6,
+            pos: 6,
+            title: "OT Management",
+            url:
+              "https://storage.googleapis.com/a1aa/image/5f758b40-8729-4930-d5da-0bdfdf77aa24.jpg",
+            alt:
+              "Operating theater with surgical team preparing for surgery with advanced medical equipment",
+            description:
+              "Coordinate operating theater schedules, surgical teams, and equipment for efficient operations.",
+          },
+          {
+            id: 7,
+            pos: 7,
+            title: "Digital Records",
+            url:
+              "https://storage.googleapis.com/a1aa/image/7ce14c1d-73e3-4cb7-5034-b45318689899.jpg",
+            alt:
+              "Digital patient records displayed on a laptop screen with secure access controls",
+            description:
+              "Securely store and access patient records digitally with easy retrieval and audit trails.",
+          },
+          {
+            id: 8,
+            pos: 8,
+            title: "Revenue Analysis",
+            url:
+              "https://storage.googleapis.com/a1aa/image/91a7e644-d47c-4764-ac93-56f93b86bd11.jpg",
+            alt:
+              "Financial analyst reviewing hospital revenue charts and graphs on a desktop computer",
+            description:
+              "Analyze hospital revenue streams, billing, and financial performance with detailed reports.",
+          },
+          {
+            id: 9,
+            pos: 9,
+            title: "HMS Portal",
+            url:
+              "https://storage.googleapis.com/a1aa/image/2edadd5a-7286-413a-9c43-a69a9438b38d.jpg",
+            alt:
+              "Hospital management system portal dashboard showing staff collaboration tools",
+            description:
+              "Centralized portal for hospital staff collaboration, resource management, and communication.",
+          },
+          {
+            id: 10,
+            pos: 10,
+            title: "Mobile Application",
+            url:
+              "https://storage.googleapis.com/a1aa/image/ebf0c6db-0a58-4311-9bb8-449aa5553214.jpg",
+            alt:
+              "Mobile phone displaying hospital management app interface for patients and staff",
+            description:
+              "Access hospital Products on the go with our intuitive mobile application for patients and staff.",
+          },
+          {
+            id: 11,
+            pos: 11,
+            title: "WhatsApp Integration",
+            url:
+              "https://storage.googleapis.com/a1aa/image/d399f071-6982-4b47-eca6-efe48ae7f3a0.jpg",
+            alt:
+              "Smartphone showing WhatsApp chat interface for patient communication and support",
+            description:
+              "Enhance patient communication and support through seamless WhatsApp integration.",
+          },
+        ]);
+
+        // Only first 9 cards for carousel
+        const carouselItems = reactive(items.slice(0, 9));
+
+        const selected = ref(null);
+
+        function selectCard(item) {
+          if (selected.value && selected.value.id === item.id) {
+            selected.value = null;
+            return;
+          }
+          selected.value = item;
+
+          const centerPos = 4;
+          const currentCenterIndex = carouselItems.findIndex(
+            (i) => i.pos === centerPos
+          );
+          const clickedIndex = carouselItems.findIndex((i) => i.id === item.id);
+
+          if (clickedIndex === -1) return;
+
+          if (clickedIndex !== currentCenterIndex) {
+            const tempPos = carouselItems[clickedIndex].pos;
+            carouselItems[clickedIndex].pos = carouselItems[currentCenterIndex].pos;
+            carouselItems[currentCenterIndex].pos = tempPos;
+          }
+        }
+
+        let autoScrollInterval = null;
+
+        function autoScroll() {
+          carouselItems.forEach((item) => {
+            item.pos = (item.pos - 1 + 9) % 9;
+          });
+          if (selected.value) {
+            const sel = carouselItems.find((i) => i.id === selected.value.id);
+            if (!sel || sel.pos !== 4) {
+              selected.value = null;
+            }
+          }
+        }
+
+        onMounted(() => {
+          // Speed up scroll: every 2.5 seconds
+          autoScrollInterval = setInterval(autoScroll, 2500);
+        });
+
+        return {
+          items: carouselItems,
+          selected,
+          selectCard,
+        };
+      },
+    }).mount("#app");
+  </script>
+
+  <!-- FAQ Section -->
+  <section
+    aria-label="Ayu Care Healthcare Management FAQs"
+    class="max-w-7xl mx-auto px-6 py-20"
+    id="faq"
+  >
+    <h1
+      class="text-center text-[22px] sm:text-[24px] md:text-[26px] font-bold text-black font-serif mb-8 tracking-wide"
+      style="font-family: 'Playfair Display', serif;"
+    >
+      A y u &nbsp; C a r e &nbsp; H e a l t h c a r e &nbsp; M a n a g e m e n t &nbsp; F a q s
+    </h1>
+    <section class="w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="space-y-4">
+        <article>
+          <button
+            id="btn-1"
+            class="w-full flex justify-between items-center bg-[#1f7a5f] text-white font-semibold text-[14px] px-6 py-4 rounded-md"
+            type="button"
+            onclick="toggleContent(1)"
+            aria-expanded="false"
+            aria-controls="answer-1"
+          >
+            Seamless Patient Registration and Appointment Booking via Web and WhatsApp
+            <i id="icon-1" class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <p
+            id="answer-1"
+            class="hidden bg-white border border-[#1f7a5f] rounded-b-md px-6 py-4 text-gray-800 text-[15px] font-serif"
+            style="font-family: 'Playfair Display', serif;"
+            role="region"
+            aria-labelledby="btn-1"
+          >
+            Seamless Patient Registration and Appointment Booking via Web and WhatsApp enables patients to easily register and book appointments through multiple channels, improving accessibility and convenience.
+          </p>
+        </article>
+        <article>
+          <button
+            id="btn-2"
+            class="w-full flex justify-between items-center bg-[#2f51b7] text-white font-semibold text-[14px] px-6 py-4 rounded-md"
+            type="button"
+            onclick="toggleContent(2)"
+            aria-expanded="false"
+            aria-controls="answer-2"
+          >
+            Comprehensive Electronic Medical Records with integrated clinical coding (ICD, CPT, SNOMED, LOINC)
+            <i id="icon-2" class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <p
+            id="answer-2"
+            class="hidden bg-white border border-[#2f51b7] rounded-b-md px-6 py-4 text-gray-800 text-[15px] font-serif"
+            style="font-family: 'Playfair Display', serif;"
+            role="region"
+            aria-labelledby="btn-2"
+          >
+            Comprehensive Electronic Medical Records with integrated clinical coding (ICD, CPT, SNOMED, LOINC) ensure accurate and standardized documentation of patient data for better clinical decision-making.
+          </p>
+        </article>
+        <article>
+          <button
+            id="btn-3"
+            class="w-full flex justify-between items-center bg-[#1f7a5f] text-white font-semibold text-[14px] px-6 py-4 rounded-md"
+            type="button"
+            onclick="toggleContent(3)"
+            aria-expanded="false"
+            aria-controls="answer-3"
+          >
+            Efficient management of Outpatient and Inpatient workflows including Bed allocation and Discharge
+            <i id="icon-3" class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <p
+            id="answer-3"
+            class="hidden bg-white border border-[#1f7a5f] rounded-b-md px-6 py-4 text-gray-800 text-[15px] font-serif"
+            style="font-family: 'Playfair Display', serif;"
+            role="region"
+            aria-labelledby="btn-3"
+          >
+            Efficient management of Outpatient and Inpatient workflows including Bed allocation and Discharge streamlines hospital operations and enhances patient care.
+          </p>
+        </article>
+      </div>
+      <div class="space-y-4">
+        <article>
+          <button
+            id="btn-6"
+            class="w-full flex justify-between items-center bg-[#1f7a5f] text-white font-semibold text-[14px] px-6 py-4 rounded-md"
+            type="button"
+            onclick="toggleContent(6)"
+            aria-expanded="false"
+            aria-controls="answer-6"
+          >
+            Pharmacy Management with real-time stock control, E-prescriptions, and Billing integration
+            <i id="icon-6" class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <p
+            id="answer-6"
+            class="hidden bg-white border border-[#1f7a5f] rounded-b-md px-6 py-4 text-gray-800 text-[15px] font-serif"
+            style="font-family: 'Playfair Display', serif;"
+            role="region"
+            aria-labelledby="btn-6"
+          >
+            Pharmacy Management with real-time stock control, E-prescriptions, and Billing integration ensures medication safety and efficient pharmacy operations.
+          </p>
+        </article>
+        <article>
+          <button
+            id="btn-8"
+            class="w-full flex justify-between items-center bg-[#2f51b7] text-white font-semibold text-[14px] px-6 py-4 rounded-md"
+            type="button"
+            onclick="toggleContent(8)"
+            aria-expanded="false"
+            aria-controls="answer-8"
+          >
+            Automated Output Management delivering Reports and Bills
+            <i id="icon-8" class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <p
+            id="answer-8"
+            class="hidden bg-white border border-[#2f51b7] rounded-b-md px-6 py-4 text-gray-800 text-[15px] font-serif"
+            style="font-family: 'Playfair Display', serif;"
+            role="region"
+            aria-labelledby="btn-8"
+          >
+            Automated Output Management delivering Reports and Bills simplifies financial processes and reporting.
+          </p>
+        </article>
+        <article>
+          <button
+            id="btn-9"
+            class="w-full flex justify-between items-center bg-[#1f7a5f] text-white font-semibold text-[14px] px-6 py-4 rounded-md"
+            type="button"
+            onclick="toggleContent(9)"
+            aria-expanded="false"
+            aria-controls="answer-9"
+          >
+            Intuitive Nursing Station tools for Vitals Monitoring, Medication Administration, and Shift handover
+            <i id="icon-9" class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <p
+            id="answer-9"
+            class="hidden bg-white border border-[#1f7a5f] rounded-b-md px-6 py-4 text-gray-800 text-[15px] font-serif"
+            style="font-family: 'Playfair Display', serif;"
+            role="region"
+            aria-labelledby="btn-9"
+          >
+            Intuitive Nursing Station tools for Vitals Monitoring, Medication Administration, and Shift handover enhance nursing efficiency and patient safety.
+          </p>
+        </article>
+      </div>
+    </section>
+  </section>
+
+  <script>
+    function toggleContent(index) {
+      const answer = document.getElementById("answer-" + index);
+      const icon = document.getElementById("icon-" + index);
+      const btn = document.getElementById("btn-" + index);
+      if (answer.classList.contains("hidden")) {
+        answer.classList.remove("hidden");
+        icon.classList.remove("fa-chevron-right");
+        icon.classList.add("fa-chevron-down");
+        btn.setAttribute("aria-expanded", "true");
+      } else {
+        answer.classList.add("hidden");
+        icon.classList.remove("fa-chevron-down");
+        icon.classList.add("fa-chevron-right");
+        btn.setAttribute("aria-expanded", "false");
+      }
+    }
+  </script>
+
+  <!-- Technical Related Products Section with background -->
+<section
+  id="technical-related-Products"
+  aria-label="Technical Related Products"
+  class="max-w-7xl mx-auto rounded-lg relative bg-cover bg-white bg-center"
+  style="background-image: url('https://images.unsplash.com/photo-1581092916357-4c4f47f9f9b3');"
+>
+  <!-- Light overlay -->
+  <div class="absolute inset-0 bg-white/70 rounded-lg"></div>
+
+  <div class="max-w-7xl mx-auto px-6 py-16 text-center relative z-10">
+    <h1 class="text-3xl md:text-4xl font-semibold mb-4" style="font-family: 'Playfair Display', serif;">
+      Technical Related Products
+    </h1>
+    <p class="text-black text-2xs md:text-base max-w-2xl mx-auto mb-12">
+      Built with robust, secure, and interoperable technologies to meet the
+      evolving demands of modern healthcare.
+    </p>
+
+    <!-- Products Grid -->
+    <div
+      id="ProductsGrid"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-14 max-w-6xl mx-auto"
+    >
+      <!-- Box 1 -->
+      <div class="service-item bg-[#12a6fc]/80 rounded-full py-8 px-6 flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-white font-semibold text-lg leading-snug mb-2">AI Integration</h2>
+        <p class="text-white text-sm leading-tight max-w-[180px]">
+          Manage patient registration, appointments, and reception workflows efficiently.
+        </p>
+      </div>
+
+      <!-- Box 2 -->
+      <div class="service-item bg-[#f97316]/80 rounded-full py-8 px-6 flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-white font-semibold text-lg leading-snug mb-2">Billing System</h2>
+        <p class="text-white text-sm leading-tight max-w-[180px]">
+          Fast, secure, and accurate billing with integrated payment options.
+        </p>
+      </div>
+
+      <!-- Box 3 -->
+      <div class="service-item bg-[#22c55e]/80 rounded-full py-8 px-6 flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-white font-semibold text-lg leading-snug mb-2">Laboratory</h2>
+        <p class="text-white text-sm leading-tight max-w-[180px]">
+          Advanced lab management for accurate and timely diagnostic results.
+        </p>
+      </div>
+
+      <!-- Box 4 -->
+      <div class="service-item bg-[#a855f7]/80 rounded-full py-8 px-6 flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-white font-semibold text-lg leading-snug mb-2">Radiology</h2>
+        <p class="text-white text-sm leading-tight max-w-[180px]">
+          Precise imaging services with secure digital reporting.
+        </p>
+      </div>
+
+      <!-- Box 5 -->
+      <div class="service-item bg-[#ef4444]/80 rounded-full py-8 px-6 flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-white font-semibold text-lg leading-snug mb-2">Pharmacy</h2>
+        <p class="text-white text-sm leading-tight max-w-[180px]">
+          End-to-end medicine management with inventory tracking.
+        </p>
+      </div>
+
+      <!-- Box 6 -->
+      <div class="service-item bg-[#06b6d4]/80 rounded-full py-8 px-6 flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-white font-semibold text-lg leading-snug mb-2">Patient Portal</h2>
+        <p class="text-white text-sm leading-tight max-w-[180px]">
+          Secure online access to reports, prescriptions, and appointments.
+        </p>
+      </div>
+
+      <!-- Box 7 -->
+      <div class="service-item bg-[#eab308]/80 rounded-full py-8 px-6 flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-white font-semibold text-lg leading-snug mb-2">Inventory</h2>
+        <p class="text-white text-sm leading-tight max-w-[180px]">
+          Track stock, consumables, and hospital supplies efficiently.
+        </p>
+      </div>
+
+      <!-- Box 8 -->
+      <div class="service-item bg-[#3b82f6]/80 rounded-full py-8 px-6 flex flex-col items-center justify-center cursor-pointer">
+        <h2 class="text-white font-semibold text-lg leading-snug mb-2">Reports</h2>
+        <p class="text-white text-sm leading-tight max-w-[180px]">
+          Generate insightful reports for better healthcare decisions.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Floating Motion -->
+<style>
+  @keyframes floaty {
+    0%   { transform: translate(0px, 0px); }
+    25%  { transform: translate(4px, -6px); }
+    50%  { transform: translate(0px, -10px); }
+    75%  { transform: translate(-4px, -6px); }
+    100% { transform: translate(0px, 0px); }
+  }
+
+  .service-item {
+    animation: floaty 4s ease-in-out infinite;
+  }
+
+  .service-item:nth-child(1) { animation-delay: 0s; }
+  .service-item:nth-child(2) { animation-delay: 0.3s; }
+  .service-item:nth-child(3) { animation-delay: 0.6s; }
+  .service-item:nth-child(4) { animation-delay: 0.9s; }
+  .service-item:nth-child(5) { animation-delay: 1.2s; }
+  .service-item:nth-child(6) { animation-delay: 1.5s; }
+  .service-item:nth-child(7) { animation-delay: 1.8s; }
+  .service-item:nth-child(8) { animation-delay: 2.1s; }
+</style>
+
+
+
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
+    <h2 class="text-center text-3xl font-semibold text-4xl font-extrabold mb-6" style="
+    font-family: 'Playfair Display', serif;
+    color: rgb(15 118 110 / var(--tw-text-opacity, 1));
+  ">
+   Seamless Inpatient Ecosystem
+</h2>
+
+      <div class="flex flex-wrap justify-center gap-3 mb-8 max-w-full overflow-x-auto no-scrollbar" style="-webkit-overflow-scrolling: touch;">
+        <div class="flex-shrink-0 bg-[#F3F7F6] border border-[#D1D5DB] rounded-lg px-6 py-3 text-[#0B7A5F] font-semibold cursor-pointer select-none whitespace-nowrap">
+          Admission &amp; Discharge
+        </div>
+        <div class="flex-shrink-0 bg-white border border-[#D1D5DB] rounded-lg px-6 py-3 text-[#0B1E40] cursor-pointer select-none whitespace-nowrap">
+          Ward Management
+        </div>
+        <div class="flex-shrink-0 bg-white border border-[#D1D5DB] rounded-lg px-6 py-3 text-[#0B1E40] cursor-pointer select-none whitespace-nowrap">
+          Task Manager
+        </div>
+        <div class="flex-shrink-0 bg-white border border-[#D1D5DB] rounded-lg px-6 py-3 text-[#0B1E40] cursor-pointer select-none whitespace-nowrap">
+          Unified Patient Records
+        </div>
+        <div class="flex-shrink-0 bg-white border border-[#D1D5DB] rounded-lg px-6 py-3 text-[#0B1E40] cursor-pointer select-none whitespace-nowrap">
+          Advanced IPD Analytics
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-center bg-gradient-to-r from-[#F3F7F6] to-[#C6E0D9] rounded-3xl p-6 md:p-12 gap-8 md:gap-16">
+        <div class="md:w-1/2 w-full">
+    <h4 class=" md:text-2xl font-medium mb-6" style="
+    font-family: 'Playfair Display', serif;
+    color: rgb(15 118 110 / var(--tw-text-opacity, 1));
+  ">
+        Streamlined Patient Care and Efficient Workflow, Every Time
+</h4>
+
+          <ul class="space-y-4 mb-8 px-2">
+            <li class="flex items-center gap-3 text-[#0B1E40] text-sm sm:text-base">
+              <img alt="Icon representing real-time monitoring" class="flex-shrink-0" height="20" src="https://storage.googleapis.com/a1aa/image/9d14b70c-253c-485f-ace1-f46cbb48b55a.jpg" width="20">
+              Real-time patient monitoring for proactive care
+            </li>
+            <li class="flex items-center gap-3 text-[#0B1E40] text-sm sm:text-base">
+              <img alt="Icon representing automated scheduling" class="flex-shrink-0" height="20" src="https://storage.googleapis.com/a1aa/image/c1cb3b81-934d-4651-2757-c3706e8d0b4b.jpg" width="20">
+              Automated scheduling to optimize staff allocation
+            </li>
+            <li class="flex items-center gap-3 text-[#0B1E40] text-sm sm:text-base">
+              <img alt="Icon representing data analytics" class="flex-shrink-0" height="20" src="https://storage.googleapis.com/a1aa/image/1db47798-1f62-463f-62e7-15c0b1255e49.jpg" width="20">
+              Advanced data analytics for improved decision making
+            </li>
+          </ul>
+          <div class="px-2">
+           
+          </div>
+        </div>
+        <div class="md:w-1/2 w-full flex justify-center px-2">
+          <img alt="Screenshot of Admit Patient form showing Patient Details and IPD Details fields with input boxes and buttons" class="rounded-2xl shadow-lg max-w-full h-auto" height="320" src="https://storage.googleapis.com/a1aa/image/222eda71-d45e-449e-0962-c82c02b8e5d9.jpg" width="600">
+        </div>
+      </div>
+    </section>
+  <!-- Our Clients Section -->
+  <section
+    class="max-w-8xl mx-auto px-8 sm:px-8 lg:px-9 pt-13 bg-black"
+    aria-label="Our Clients"
+    id="clients"
+  >
+    <h1
+      class="text-center text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-700 mb-8"
+      style="font-family: 'Playfair Display', serif;"
+    >
+      <span style="color: rgb(6, 255, 238)">Our Clients</span>
+    </h1>
+    <div class="scrolling-container max-w-full mx-auto" aria-hidden="true">
+      <div class="scrolling-wrapper space-x-8">
+        <img
+          alt="Logo of GV Speciality Hospital with blue and green text on white background"
+          class="max-h-50 object-contain"
+          height="100"
+          src="https://storage.googleapis.com/a1aa/image/865fca7e-8041-4375-9805-8636984961ee.jpg"
+          width="200"
+        />
+        <img
+          alt="Logo of JP Hospital with red and blue icon and text on white background"
+          class="max-h-50 object-contain"
+          height="80"
+          src="https://storage.googleapis.com/a1aa/image/56986051-307b-4658-0e33-0424268b6d05.jpg"
+          width="168"
+        />
+        <img
+          alt="Logo of N.M. Hospital with purple text on white background"
+          class="max-h-50 object-contain"
+          height="80"
+          src="https://storage.googleapis.com/a1aa/image/ba9f6107-c2ac-4c5a-fb47-9a9c3014253f.jpg"
+          width="168"
+        />
+        <img
+          alt="Logo of Pulse Super Speciality Hospital with blue and orange text on white background"
+          class="max-h-50 object-contain"
+          height="80"
+          src="https://storage.googleapis.com/a1aa/image/ccadfddb-98fa-451e-122a-980f70e8da46.jpg"
+          width="168"
+        />
+        <img
+          alt="Logo of Sahasrabuddhe Hospital &amp; I.G.C.U. with green text on white background"
+          class="max-h-50 object-contain"
+          height="80"
+          src="https://storage.googleapis.com/a1aa/image/3ebe7f76-0458-47dd-f13d-73d5829ba633.jpg"
+          width="168"
+        />
+        <img
+          alt="Logo of Sai Seva Hospital with red text and circular image on white background"
+          class="max-h-50 object-contain"
+          height="80"
+          src="https://storage.googleapis.com/a1aa/image/97f9eab0-e815-402f-16dc-b4a3f1162174.jpg"
+          width="168"
+        />
+        <img
+          alt="Logo of Armoraa with purple icon and text on white background"
+          class="max-h-50 object-contain"
+          height="80"
+          src="https://storage.googleapis.com/a1aa/image/2d913de4-d56a-41a6-658e-d0a205c0da26.jpg"
+          width="168"
+        />
+        <img
+          alt="Logo of Robin Sugar with blue text and icon on white background"
+          class="max-h-50 object-contain"
+          height="80"
+          src="https://storage.googleapis.com/a1aa/image/6178806e-6dd2-4bb1-8190-f16563b91fb5.jpg"
+          width="168"
+        />
+        <img
+          alt="Logo of Advanced Diabetes Centre with dark blue text and icon on white background"
+          class="max-h-50 object-contain"
+          height="80"
+          src="https://storage.googleapis.com/a1aa/image/6810b3b1-8e91-4a57-0889-244564b6194b.jpg"
+          width="168"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section
+    class="contact-section"
+    aria-label="Contact Information and Message Form"
+    id="contact"
+  >
+    <!-- Left Contact Info and Why Choose -->
+    <div class="space-y-8">
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <div>
+          <i class="fas fa-phone-alt"></i>
+          <span>+91 97112 01611</span>
+        </div>
+        <div>
+          <i class="fas fa-envelope"></i>
+          <span>info@Ayucare.com</span>
+        </div>
+        <div>
+          <i class="fas fa-map-marker-alt"></i>
+          <span
+            >First Floor, 19, Block B, Sector 60, Noida, Uttar Pradesh 201301</span
+          >
+        </div>
+        <div>
+          <i class="fas fa-clock"></i>
+          <span>Mon-Sat: 10:30 AM - 7:30 PM</span>
+        </div>
+      </div>
+      <div class="why-choose" tabindex="0">
+        <h4>Why Choose Ayucare?</h4>
+        <p>
+          We are more than just a software provider; we are your technology
+          partner for growth and excellence in healthcare.
+        </p>
+        <ul>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span
+              ><strong>Comprehensive Solution:</strong> 35+ integrated modules
+              for complete operational control.</span
+            >
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span
+              ><strong>Rapid Implementation:</strong> Go live in as little as
+              2-4 days with our expert support.</span
+            >
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span
+              ><strong>Trusted &amp; Secure:</strong> ISO compliant and trusted
+              by over 500 facilities across India.</span
+            >
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span
+              ><strong>Scalable Platform:</strong> Our cloud-based solution grows
+              with your facility, from a single clinic to a hospital network.</span
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Right Form -->
+    <form
+      aria-label="Send Us a Message"
+      class="contact-form"
+      id="contactForm"
+      method="post"
+      action="#"
+    >
+      <h3>Send Us a Message</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="fullName">Full Name *</label>
+          <input
+            id="fullName"
+            name="fullName"
+            required
+            type="text"
+            autocomplete="name"
+          />
+        </div>
+        <div>
+          <label for="organizationName">Organization Name *</label>
+          <input
+            id="organizationName"
+            name="organizationName"
+            required
+            type="text"
+            autocomplete="organization"
+          />
+        </div>
+        <div>
+          <label for="phoneNumber">Phone Number *</label>
+          <input
+            id="phoneNumber"
+            name="phoneNumber"
+            required
+            type="tel"
+            autocomplete="tel"
+          />
+        </div>
+        <div>
+          <label for="emailAddress">Email Address *</label>
+          <input
+            id="emailAddress"
+            name="emailAddress"
+            required
+            type="email"
+            autocomplete="email"
+          />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="location">Location (City/Region) *</label>
+          <input id="location" name="location" required type="text" />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="message" class="flex items-center justify-between">
+            Your Message (Optional)
+            <i class="fas fa-info-circle text-[#1e3a8a] text-xs"></i>
+          </label>
+          <textarea id="message" name="message" rows="3"></textarea>
+        </div>
+      </div>
+      <button type="submit" aria-label="Send Message">
+        <i class="fas fa-paper-plane text-[10px]"></i> Send Message
+      </button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer role="contentinfo" aria-label="Footer" style="background-color: black;">
+    <div class="footer-content">
+      <div class="flex flex-col space-y-6">
+        <img
+          alt="Ayucare company logo rectangle with teal text on black background"
+          class="w-[220px] h-[80px] object-contain"
+          height="80"
+          src="images/logoayucare.png"
+          width="220"
+        />
+        <p>
+          Ayucare is dedicated to providing innovative healthcare software and
+          mobile solutions to improve patient care and hospital management.
+        </p>
+      </div>
+      <div>
+        <h5>Useful Links</h5>
+        <ul>
+          <li><a href="/" tabindex="0">Home</a></li>
+          <li><a href="aboutus" tabindex="0">About Us</a></li>
+          <li><a href="out-patient-management" tabindex="0">Products</a></li>
+          <li><a href="contactus" tabindex="0">Contact</a></li>
+          <li><a href="privacypolicy" tabindex="0">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact Us</h5>
+        <ul>
+          <li class="flex items-start space-x-4">
+            <i class="fas fa-map-marker-alt mt-1 text-teal-400 text-2xl"></i>
+            <span>
+              123 Health Street,<br />
+              Wellness City, 456789,<br />
+              India
+            </span>
+          </li>
+          <li class="flex items-center space-x-4">
+            <i class="fas fa-phone-alt text-teal-400 text-2xl"></i>
+            <a href="tel:+911234567890" tabindex="0">+91 12345 67890</a>
+          </li>
+          <li class="flex items-center space-x-4">
+            <i class="fas fa-envelope text-teal-400 text-2xl"></i>
+            <a href="mailto:info@ayucare.com" tabindex="0">info@ayucare.com</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h5>Follow Us</h5>
+        <div class="flex space-x-8 text-gray-400 text-3xl">
+          <a aria-label="Facebook" href="#" tabindex="0"><i class="fab fa-facebook-f"></i></a>
+          <a aria-label="Twitter" href="#" tabindex="0"><i class="fab fa-twitter"></i></a>
+          <a aria-label="Instagram" href="#" tabindex="0"><i class="fab fa-instagram"></i></a>
+          <a aria-label="LinkedIn" href="#" tabindex="0"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p class="mt-12 text-gray-400 text-lg max-w-xs leading-relaxed">
+          © 2024 Ayucare. All rights reserved.
+        </p>
+        <p class="mt-2 text-gray-400 text-lg max-w-xs leading-relaxed">
+          Designed and developed by
+          <a
+            class="text-teal-400 hover:underline"
+            href="https://Prodbiz solutions pvt limited"
+            rel="noopener noreferrer"
+            target="_blank"
+            tabindex="0"
+            >Prodbiz solutions pvt limited</a
+          >
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation dropdown toggle for desktop
+    const desktopDropdownBtn = document.getElementById("desktopDropdownBtn");
+    const modulesDropdown = document.getElementById("modulesDropdown");
+    desktopDropdownBtn.addEventListener("click", () => {
+      const expanded = desktopDropdownBtn.getAttribute("aria-expanded") === "true";
+      desktopDropdownBtn.setAttribute("aria-expanded", !expanded);
+      modulesDropdown.classList.toggle("hidden");
+    });
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        !desktopDropdownBtn.contains(e.target) &&
+        !modulesDropdown.contains(e.target)
+      ) {
+        modulesDropdown.classList.add("hidden");
+        desktopDropdownBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    // Mobile menu toggle
+    const hamburgerIcon = document.getElementById("hamburgerIcon");
+    const mobileMenu = document.getElementById("mobileMenu");
+    hamburgerIcon.addEventListener("click", () => {
+      const expanded = hamburgerIcon.getAttribute("aria-expanded") === "true";
+      hamburgerIcon.setAttribute("aria-expanded", !expanded);
+      mobileMenu.classList.toggle("hidden");
+    });
+
+    // Mobile Products submenu toggle
+    const mobileModulesBtn = document.getElementById("mobileModulesBtn");
+    const mobileModulesSubmenu = document.getElementById("mobileModulesSubmenu");
+    mobileModulesBtn.addEventListener("click", () => {
+      const expanded = mobileModulesBtn.getAttribute("aria-expanded") === "true";
+      mobileModulesBtn.setAttribute("aria-expanded", !expanded);
+      mobileModulesSubmenu.classList.toggle("hidden");
+    });
+  </script>
+</body>
+</html>
